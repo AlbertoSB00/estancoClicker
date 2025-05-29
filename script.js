@@ -9,8 +9,7 @@ class EstancoClicker {
         this.prestigeLevel = 0;
         this.prestigePoints = 0;
         this.totalLifetimeEarnings = 0;
-        this.musicVolume = 0.8;
-        this.musicPlaying = true; // Por defecto activada
+
         this.clicksPerSecond = 0; // Clicks automáticos por segundo
 
         // Variables para logros especiales
@@ -353,7 +352,6 @@ class EstancoClicker {
 
         this.startIncomeLoop();
         this.checkAchievements();
-        this.initAudio();
     }
 
     bindEvents() {
@@ -382,14 +380,7 @@ class EstancoClicker {
             }
         });
 
-        // Control de volumen
-        document.getElementById('volume-btn').addEventListener('click', () => {
-            this.toggleMusic();
-        });
 
-        document.getElementById('volume-slider').addEventListener('input', (e) => {
-            this.setVolume(e.target.value / 100);
-        });
 
         // Sistema de importar/exportar
         const exportBtn = document.getElementById('export-btn');
@@ -458,7 +449,7 @@ class EstancoClicker {
         const upgradeId = e.currentTarget.id.replace('upgrade-', '');
         const upgrade = this.clickUpgrades[upgradeId];
 
-        console.log('Comprando upgrade:', upgradeId, upgrade);
+
 
         if (upgrade) {
             const cost = this.getClickUpgradeCost(upgradeId);
@@ -467,13 +458,8 @@ class EstancoClicker {
                 this.money -= cost;
                 upgrade.count++;
 
-                console.log('Upgrade comprado. Nuevo count:', upgrade.count);
-                console.log('clickUpgrades estado:', this.clickUpgrades);
-
                 // Recalcular dinero por click
                 const newMoneyPerClick = this.calculateMoneyPerClick();
-
-                console.log('Nuevo moneyPerClick calculado:', newMoneyPerClick);
 
                 // Verificar que el resultado sea válido
                 if (isNaN(newMoneyPerClick) || newMoneyPerClick < 1) {
@@ -482,8 +468,6 @@ class EstancoClicker {
                 } else {
                     this.moneyPerClick = newMoneyPerClick;
                 }
-
-                console.log('moneyPerClick final:', this.moneyPerClick);
 
                 this.updateDisplay();
                 this.updateClickUpgradesDisplay();
@@ -536,45 +520,25 @@ class EstancoClicker {
     }
 
     calculateMoneyPerClick() {
-        console.log('=== calculateMoneyPerClick ===');
-        console.log('this.clickUpgrades:', this.clickUpgrades);
-        console.log('this.prestigeLevel:', this.prestigeLevel);
-
         // El dinero por click: 1€ base + bonus de cursores + bonus de prestigio
         let baseClick = 1;
-        console.log('baseClick inicial:', baseClick);
 
         // Bonus de cursores manuales (verificar que existan)
         if (this.clickUpgrades && typeof this.clickUpgrades === 'object') {
-            console.log('clickUpgrades existe, procesando...');
             Object.values(this.clickUpgrades).forEach(upgrade => {
-                console.log('Procesando upgrade:', upgrade);
                 if (upgrade && typeof upgrade.count === 'number' && typeof upgrade.clickBonus === 'number') {
-                    const bonus = upgrade.count * upgrade.clickBonus;
-                    console.log(`Añadiendo bonus: ${upgrade.count} * ${upgrade.clickBonus} = ${bonus}`);
-                    baseClick += bonus;
+                    baseClick += upgrade.count * upgrade.clickBonus;
                 }
             });
-        } else {
-            console.log('clickUpgrades no existe o no es objeto');
         }
-
-        console.log('baseClick después de cursores:', baseClick);
 
         // Aplicar bonus de prestigio (10% por nivel de prestigio)
         const prestigeLevel = this.prestigeLevel || 0;
         const prestigeMultiplier = 1 + (prestigeLevel * 0.1);
-        console.log('prestigeMultiplier:', prestigeMultiplier);
-
         const finalClick = Math.floor(baseClick * prestigeMultiplier);
-        console.log('finalClick antes de Math.max:', finalClick);
 
         // Asegurar que siempre sea al menos 1
-        const result = Math.max(1, finalClick);
-        console.log('resultado final:', result);
-        console.log('=== fin calculateMoneyPerClick ===');
-
-        return result;
+        return Math.max(1, finalClick);
     }
 
     canPrestige() {
@@ -679,75 +643,7 @@ class EstancoClicker {
         this.showNotification('¡Juego reseteado completamente! Empezando desde cero...');
     }
 
-    initAudio() {
-        // Sistema de audio simplificado
-        this.musicGenerator = new BackgroundMusicGenerator();
-        this.audioInitialized = false;
 
-        // Inicializar audio automáticamente al primer click
-        const initAudioOnClick = async () => {
-            if (!this.audioInitialized) {
-                try {
-                    console.log('Inicializando audio...');
-                    const success = await this.musicGenerator.init();
-                    if (success) {
-                        this.musicGenerator.setVolume(this.musicVolume);
-                        if (this.musicPlaying && this.musicVolume > 0) {
-                            await this.musicGenerator.start();
-                            console.log('Música iniciada automáticamente');
-                        }
-                        this.audioInitialized = true;
-                        this.updateVolumeButton();
-                    }
-                } catch (error) {
-                    console.error('Error inicializando audio:', error);
-                }
-            }
-        };
-
-        // Escuchar clicks para inicializar
-        document.addEventListener('click', initAudioOnClick, { once: true });
-        document.addEventListener('touchstart', initAudioOnClick, { once: true });
-    }
-
-    async toggleMusic() {
-        if (!this.audioInitialized) {
-            this.showNotification('Haz click en cualquier parte para inicializar el audio primero.');
-            return;
-        }
-
-        try {
-            if (this.musicPlaying) {
-                // Pausar música
-                if (this.musicGenerator) {
-                    this.musicGenerator.stop();
-                }
-                this.musicPlaying = false;
-                console.log('Música pausada');
-            } else {
-                // Reanudar música
-                if (this.musicGenerator) {
-                    await this.musicGenerator.start();
-                }
-                this.musicPlaying = true;
-                console.log('Música reanudada');
-            }
-            this.updateVolumeButton();
-        } catch (error) {
-            console.error('Error al cambiar estado de música:', error);
-        }
-    }
-
-    updateVolumeButton() {
-        const volumeBtn = document.getElementById('volume-btn');
-        if (this.musicVolume === 0 || !this.musicPlaying) {
-            volumeBtn.textContent = '🔇';
-        } else if (this.musicVolume < 0.5) {
-            volumeBtn.textContent = '🔉';
-        } else {
-            volumeBtn.textContent = '🔊';
-        }
-    }
 
 
 
@@ -766,7 +662,7 @@ class EstancoClicker {
                 prestigeLevel: this.prestigeLevel,
                 prestigePoints: this.prestigePoints,
                 totalLifetimeEarnings: this.totalLifetimeEarnings,
-                musicVolume: this.musicVolume,
+
                 businessUpgrades: this.businessUpgrades,
                 achievements: this.achievements,
                 exportDate: new Date().toISOString(),
@@ -877,7 +773,7 @@ class EstancoClicker {
             this.prestigeLevel = gameData.prestigeLevel || 0;
             this.prestigePoints = gameData.prestigePoints || 0;
             this.totalLifetimeEarnings = gameData.totalLifetimeEarnings || 0;
-            this.musicVolume = gameData.musicVolume || 0.5;
+
 
             // Cargar mejoras de negocio
             if (gameData.businessUpgrades) {
@@ -897,8 +793,7 @@ class EstancoClicker {
             this.updateBusinessDisplay();
             this.renderAchievements();
 
-            // Actualizar slider de volumen
-            document.getElementById('volume-slider').value = this.musicVolume * 100;
+
 
             // Limpiar el textarea de importación
             document.getElementById('import-code').value = '';
@@ -915,29 +810,7 @@ class EstancoClicker {
         }
     }
 
-    setVolume(volume) {
-        this.musicVolume = volume;
 
-        // Actualizar volumen del generador de música
-        if (this.musicGenerator) {
-            this.musicGenerator.setVolume(volume);
-        }
-
-        // Manejar silenciado
-        if (volume === 0 && this.musicPlaying) {
-            if (this.musicGenerator) {
-                this.musicGenerator.stop();
-            }
-            this.musicPlaying = false;
-        } else if (volume > 0 && !this.musicPlaying && this.audioInitialized) {
-            if (this.musicGenerator) {
-                this.musicGenerator.start();
-            }
-            this.musicPlaying = true;
-        }
-
-        this.updateVolumeButton();
-    }
 
     updateBusinessDisplay() {
         // Encontrar el negocio actual más avanzado
@@ -995,8 +868,10 @@ class EstancoClicker {
 
         document.getElementById('money').textContent = this.formatNumber(Math.floor(this.money));
         document.getElementById('income-per-second').textContent = this.formatNumber(this.incomePerSecond.toFixed(1));
-        document.getElementById('clicks-per-second').textContent = this.formatNumber(this.clicksPerSecond.toFixed(1));
         document.getElementById('money-per-click').textContent = this.formatNumber(this.moneyPerClick);
+
+        // Actualizar también el valor en el área de click
+        document.getElementById('click-value').textContent = this.formatNumber(this.moneyPerClick);
 
         // Actualizar información de prestigio
         if (document.getElementById('prestige-level')) {
@@ -1374,7 +1249,7 @@ class EstancoClicker {
             prestigeLevel: this.prestigeLevel,
             prestigePoints: this.prestigePoints,
             totalLifetimeEarnings: this.totalLifetimeEarnings,
-            musicVolume: this.musicVolume,
+
             clickUpgrades: this.clickUpgrades,
             businessUpgrades: this.businessUpgrades,
             achievements: this.achievements,
@@ -1411,7 +1286,7 @@ class EstancoClicker {
             this.prestigeLevel = gameData.prestigeLevel || 0;
             this.prestigePoints = gameData.prestigePoints || 0;
             this.totalLifetimeEarnings = gameData.totalLifetimeEarnings || 0;
-            this.musicVolume = gameData.musicVolume || 0.5;
+
             this.gameStartTime = gameData.gameStartTime || Date.now();
             this.speedClickCount = gameData.speedClickCount || 0;
             this.speedClickStartTime = gameData.speedClickStartTime || 0;
@@ -1464,8 +1339,7 @@ class EstancoClicker {
             // Recalcular clicks por segundo
             this.recalculateClicksPerSecond();
 
-            // Actualizar slider de volumen
-            document.getElementById('volume-slider').value = this.musicVolume * 100;
+
         }
     }
 

@@ -49,63 +49,7 @@ body {
     z-index: 1000;
 }
 
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(0,0,0,0.3);
-    padding: 8px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.2);
-}
 
-.volume-button {
-    background: none;
-    border: none;
-    font-size: 1.2em;
-    cursor: pointer;
-    color: white;
-    transition: transform 0.2s ease;
-}
-
-.volume-button:hover {
-    transform: scale(1.1);
-}
-
-.volume-slider {
-    width: 80px;
-    height: 4px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-}
-
-.volume-slider::-webkit-slider-thumb {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    background: #FFD700;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.upload-button {
-    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 15px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-left: 10px;
-}
-
-.upload-button:hover {
-    background: linear-gradient(135deg, #8e44ad 0%, #7d3c98 100%);
-    transform: scale(1.05);
-}
 
 .reset-button {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
