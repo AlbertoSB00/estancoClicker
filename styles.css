@@ -667,6 +667,21 @@ body {
     font-weight: normal;
 }
 
+.achievement-category {
+    margin: 20px 0 10px 0;
+    padding: 8px 0;
+    border-bottom: 2px solid #8B4513;
+}
+
+.achievement-category h4 {
+    color: #8B4513;
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .floating-money {
     position: absolute;
     color: #228B22;

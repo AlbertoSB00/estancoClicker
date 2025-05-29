@@ -30,95 +30,315 @@ class EstancoClicker {
         };
 
         this.businessUpgrades = {
-            ambulante: {
+            miron: {
                 count: 0,
-                baseCost: 15,
-                incomeBonus: 0.5,
+                baseCost: 5,
+                incomeBonus: 0.1,
                 level: 2,
-                name: "Puesto Ambulante",
-                description: "Montas un pequeño puesto móvil",
-                icon: "🛒",
-                signText: "PUESTO AMBULANTE"
+                name: "Mirón del Estanco",
+                description: "Solo ves cómo otros compran cigarros",
+                icon: "👀",
+                signText: "MIRANDO ESTANCOS"
             },
-            pequeno_estanco: {
+            recolector: {
+                count: 0,
+                baseCost: 10,
+                incomeBonus: 0.2,
+                level: 3,
+                name: "Recolector de Colillas",
+                description: "Recoges colillas medio fumadas en la calle",
+                icon: "🚬",
+                signText: "RECOLECTANDO COLILLAS"
+            },
+            casero: {
+                count: 0,
+                baseCost: 25,
+                incomeBonus: 0.5,
+                level: 4,
+                name: "Cigarrillo Casero",
+                description: "Aprendes a liar cigarros con papel de periódico",
+                icon: "📰",
+                signText: "CIGARROS CASEROS"
+            },
+            dealer: {
+                count: 0,
+                baseCost: 50,
+                incomeBonus: 1,
+                level: 5,
+                name: "Dealer de Cigarros Sueltos",
+                description: "Vendes cigarros sueltos en la esquina",
+                icon: "🚭",
+                signText: "CIGARROS SUELTOS"
+            },
+            callejon: {
                 count: 0,
                 baseCost: 100,
                 incomeBonus: 2,
-                level: 3,
-                name: "Pequeño Estanco",
-                description: "Abres un pequeño estanco de barrio",
+                level: 6,
+                name: "Vendedor de Callejón",
+                description: "Llevas una cajita de cigarros baratos a escondidas",
+                icon: "📦",
+                signText: "VENTA EN CALLEJÓN"
+            },
+            ambulante: {
+                count: 0,
+                baseCost: 250,
+                incomeBonus: 5,
+                level: 7,
+                name: "Puesto Ambulante de Tabaco",
+                description: "Carrito con cajetillas, encendedores y chicles",
+                icon: "🛒",
+                signText: "PUESTO AMBULANTE"
+            },
+            mercado: {
+                count: 0,
+                baseCost: 500,
+                incomeBonus: 10,
+                level: 8,
+                name: "Puesto en el Mercado",
+                description: "Tienes un lugar fijo los fines de semana",
                 icon: "🏪",
-                signText: "PEQUEÑO ESTANCO"
+                signText: "PUESTO DEL MERCADO"
+            },
+            mini_estanco: {
+                count: 0,
+                baseCost: 1000,
+                incomeBonus: 20,
+                level: 9,
+                name: "Mini Estanco",
+                description: "Primer local en un barrio sencillo",
+                icon: "🏬",
+                signText: "MINI ESTANCO"
+            },
+            legalizado: {
+                count: 0,
+                baseCost: 2500,
+                incomeBonus: 40,
+                level: 10,
+                name: "Estanco Legalizado",
+                description: "Tienes licencia municipal",
+                icon: "📋",
+                signText: "ESTANCO LEGAL"
+            },
+            empleados: {
+                count: 0,
+                baseCost: 5000,
+                incomeBonus: 80,
+                level: 11,
+                name: "Estanquero con Empleados",
+                description: "Contratas tu primer ayudante",
+                icon: "👥",
+                signText: "ESTANCO CON EMPLEADOS"
+            },
+            veinticuatro: {
+                count: 0,
+                baseCost: 10000,
+                incomeBonus: 150,
+                level: 12,
+                name: "Estanco 24 Horas",
+                description: "Ahora también vendes de noche",
+                icon: "🌙",
+                signText: "ABIERTO 24H"
+            },
+            cadena: {
+                count: 0,
+                baseCost: 25000,
+                incomeBonus: 300,
+                level: 13,
+                name: "Cadena de Estancos",
+                description: "Abres más sucursales por la ciudad",
+                icon: "🏢",
+                signText: "CADENA DE ESTANCOS"
             },
             franquicia: {
                 count: 0,
-                baseCost: 500,
-                incomeBonus: 8,
-                level: 4,
-                name: "Franquicia Local",
-                description: "Expandes con una franquicia local",
-                icon: "🏬",
-                signText: "FRANQUICIA LOCAL"
+                baseCost: 50000,
+                incomeBonus: 600,
+                level: 14,
+                name: "Franquicia Regional",
+                description: "Licencias tu marca a terceros",
+                icon: "🤝",
+                signText: "FRANQUICIA REGIONAL"
             },
             distribuidor: {
                 count: 0,
-                baseCost: 2500,
-                incomeBonus: 25,
-                level: 5,
-                name: "Distribuidor Regional",
-                description: "Distribuyes a múltiples establecimientos",
+                baseCost: 100000,
+                incomeBonus: 1200,
+                level: 15,
+                name: "Distribuidor de Tabaco",
+                description: "Llevas productos a otros estancos",
                 icon: "🚚",
-                signText: "DISTRIBUIDOR REGIONAL"
+                signText: "DISTRIBUIDOR"
+            },
+            almacen: {
+                count: 0,
+                baseCost: 250000,
+                incomeBonus: 2500,
+                level: 16,
+                name: "Almacén Centralizado",
+                description: "Tienes un centro de distribución",
+                icon: "🏭",
+                signText: "ALMACÉN CENTRAL"
             },
             marca_propia: {
                 count: 0,
-                baseCost: 12000,
-                incomeBonus: 60,
-                level: 6,
-                name: "Marca Propia de Tabaco",
-                description: "Creas tu propia marca de cigarrillos",
+                baseCost: 500000,
+                incomeBonus: 5000,
+                level: 17,
+                name: "Marca Propia de Cigarros",
+                description: "Diseñas tu primer empaque",
                 icon: "🏷️",
                 signText: "MARCA PROPIA"
             },
             fabrica: {
                 count: 0,
-                baseCost: 60000,
-                incomeBonus: 150,
-                level: 7,
+                baseCost: 1000000,
+                incomeBonus: 10000,
+                level: 18,
                 name: "Fábrica de Producción",
-                description: "Produces tabaco a gran escala",
+                description: "Cultivas, secas y empaquetas tabaco",
                 icon: "🏭",
-                signText: "FÁBRICA DE PRODUCCIÓN"
+                signText: "FÁBRICA"
             },
-            marketing: {
+            puros: {
                 count: 0,
-                baseCost: 300000,
-                incomeBonus: 400,
-                level: 8,
-                name: "Magnate del Marketing",
-                description: "Dominas la publicidad y el marketing",
+                baseCost: 2500000,
+                incomeBonus: 25000,
+                level: 19,
+                name: "Puros Premium Artesanales",
+                description: "Lanzamiento de línea de lujo",
+                icon: "🚬",
+                signText: "PUROS PREMIUM"
+            },
+            publicidad: {
+                count: 0,
+                baseCost: 5000000,
+                incomeBonus: 50000,
+                level: 20,
+                name: "Inversiones en Publicidad",
+                description: "Contratas influencers del humo",
                 icon: "📺",
-                signText: "MAGNATE DEL MARKETING"
+                signText: "PUBLICIDAD MASIVA"
             },
-            global: {
+            contrabando: {
                 count: 0,
-                baseCost: 1500000,
-                incomeBonus: 1000,
-                level: 9,
-                name: "Empresario Global",
-                description: "Expandes tu imperio mundialmente",
+                baseCost: 10000000,
+                incomeBonus: 100000,
+                level: 21,
+                name: "Contrabando Creativo",
+                description: "Encuentras formas de burlar regulaciones",
+                icon: "🕵️",
+                signText: "OPERACIONES ESPECIALES"
+            },
+            patrocinador: {
+                count: 0,
+                baseCost: 25000000,
+                incomeBonus: 250000,
+                level: 22,
+                name: "Patrocinador de Eventos",
+                description: "Apareces en fiestas, carreras, etc",
+                icon: "🎪",
+                signText: "PATROCINIOS"
+            },
+            lobby: {
+                count: 0,
+                baseCost: 50000000,
+                incomeBonus: 500000,
+                level: 23,
+                name: "Lobby Político",
+                description: "Convences a políticos para flexibilizar leyes",
+                icon: "🏛️",
+                signText: "LOBBY POLÍTICO"
+            },
+            exportador: {
+                count: 0,
+                baseCost: 100000000,
+                incomeBonus: 1000000,
+                level: 24,
+                name: "Exportador Internacional",
+                description: "Tus cigarros llegan a Europa y Asia",
                 icon: "🌍",
-                signText: "EMPRESARIO GLOBAL"
+                signText: "EXPORTACIÓN GLOBAL"
+            },
+            multinacional: {
+                count: 0,
+                baseCost: 250000000,
+                incomeBonus: 2500000,
+                level: 25,
+                name: "Compañía Multinacional",
+                description: "Abres sedes en varios países",
+                icon: "🌐",
+                signText: "MULTINACIONAL"
+            },
+            adquisicion: {
+                count: 0,
+                baseCost: 500000000,
+                incomeBonus: 5000000,
+                level: 26,
+                name: "Adquisición de Competencia",
+                description: "Compras otras marcas más pequeñas",
+                icon: "💼",
+                signText: "ADQUISICIONES"
+            },
+            grupo: {
+                count: 0,
+                baseCost: 1000000000,
+                incomeBonus: 10000000,
+                level: 27,
+                name: "Grupo Tabacalero Global",
+                description: "Tienes diferentes marcas, estilos y sabores",
+                icon: "🏢",
+                signText: "GRUPO GLOBAL"
+            },
+            fusion: {
+                count: 0,
+                baseCost: 2500000000,
+                incomeBonus: 25000000,
+                level: 28,
+                name: "Fusión con Industria del Alcohol",
+                description: "Tabaco + licor = imperio combinado",
+                icon: "🥃",
+                signText: "FUSIÓN TABACO-ALCOHOL"
+            },
+            magnate: {
+                count: 0,
+                baseCost: 5000000000,
+                incomeBonus: 50000000,
+                level: 29,
+                name: "Magnate del Tabaco",
+                description: "Eres portada de revistas económicas",
+                icon: "📰",
+                signText: "MAGNATE"
             },
             emperador: {
                 count: 0,
-                baseCost: 10000000,
-                incomeBonus: 2500,
-                level: 10,
-                name: "Emperador del Tabaco",
-                description: "Controlas el mercado mundial del tabaco",
+                baseCost: 10000000000,
+                incomeBonus: 100000000,
+                level: 30,
+                name: "Emperador del Humo",
+                description: "Controlas la industria a nivel global",
                 icon: "👑",
-                signText: "EMPERADOR DEL TABACO"
+                signText: "EMPERADOR DEL HUMO"
+            },
+            isla: {
+                count: 0,
+                baseCost: 25000000000,
+                incomeBonus: 250000000,
+                level: 31,
+                name: "Dueño de una Isla Tabacalera",
+                description: "Toda una isla dedicada a tu marca",
+                icon: "🏝️",
+                signText: "ISLA TABACALERA"
+            },
+            dios: {
+                count: 0,
+                baseCost: 100000000000,
+                incomeBonus: 1000000000,
+                level: 32,
+                name: "Dios del Estanco",
+                description: "Nivel místico desbloqueado. Apareces como leyenda urbana",
+                icon: "⚡",
+                signText: "DIOS DEL ESTANCO"
             }
         };
 
@@ -175,6 +395,8 @@ class EstancoClicker {
             { id: 'completionist', name: 'Completista', description: 'Desbloquea todos los demás logros', icon: '🏆', unlocked: false }
         ];
 
+
+
         this.init();
     }
 
@@ -184,7 +406,11 @@ class EstancoClicker {
         this.updateDisplay();
         this.updateBusinessDisplay();
         this.updateAutoClickUpgradesDisplay();
-        this.renderAchievements(); // Renderizar logros al inicio
+
+        // Renderizar logros y upgrades dinámicamente
+        this.renderAchievements();
+        this.renderBusinessUpgrades();
+
         this.startIncomeLoop();
         this.startAutoClickLoop();
         this.checkAchievements();
@@ -838,7 +1064,7 @@ class EstancoClicker {
                 const priceElement = upgradeElement.querySelector('.price');
 
                 if (countElement) countElement.textContent = upgrade.count;
-                if (priceElement) priceElement.textContent = this.getBusinessUpgradeCost(upgradeId);
+                if (priceElement) priceElement.textContent = this.formatNumber(this.getBusinessUpgradeCost(upgradeId));
 
                 // Marcar si es asequible
                 const cost = this.getBusinessUpgradeCost(upgradeId);
@@ -948,15 +1174,15 @@ class EstancoClicker {
             'cursor_army': () => this.autoClickUpgrades.cursor.count >= 50,
             'cursor_empire': () => this.autoClickUpgrades.cursor.count >= 100,
 
-            // Logros de negocios
+            // Logros de negocios (usando los nuevos IDs)
             'ambulante': () => this.businessUpgrades.ambulante.count >= 1,
-            'pequeno_estanco': () => this.businessUpgrades.pequeno_estanco.count >= 1,
+            'pequeno_estanco': () => this.businessUpgrades.mini_estanco.count >= 1,
             'franquicia': () => this.businessUpgrades.franquicia.count >= 1,
             'distribuidor': () => this.businessUpgrades.distribuidor.count >= 1,
             'marca_propia': () => this.businessUpgrades.marca_propia.count >= 1,
             'fabrica': () => this.businessUpgrades.fabrica.count >= 1,
-            'marketing': () => this.businessUpgrades.marketing.count >= 1,
-            'global': () => this.businessUpgrades.global.count >= 1,
+            'marketing': () => this.businessUpgrades.publicidad.count >= 1,
+            'global': () => this.businessUpgrades.exportador.count >= 1,
             'emperador': () => this.businessUpgrades.emperador.count >= 1,
 
             // Logros de ingresos pasivos
@@ -1011,19 +1237,82 @@ class EstancoClicker {
         if (achievementsCount) achievementsCount.textContent = unlockedCount;
         if (achievementsTotal) achievementsTotal.textContent = totalCount;
 
-        // Mostrar TODOS los logros
-        this.achievements.forEach(achievement => {
-            const achievementElement = document.createElement('div');
-            achievementElement.className = `achievement ${achievement.unlocked ? 'unlocked' : 'locked'}`;
-            achievementElement.innerHTML = `
-                <span class="achievement-icon">${achievement.icon}</span>
-                <div class="achievement-text">
-                    <div class="achievement-name">${achievement.name}</div>
-                    <div class="achievement-description">${achievement.description}</div>
+        // Organizar logros por categorías
+        const categories = {
+            'Dinero': ['first_click', 'hundred_euros', 'thousand_euros', 'ten_thousand_euros', 'hundred_thousand_euros', 'million_euros', 'millionaire'],
+            'Clicks': ['click_master', 'click_veteran', 'click_legend', 'click_god'],
+            'Cursores Automáticos': ['first_cursor', 'cursor_collector', 'cursor_army', 'cursor_empire'],
+            'Evolución del Negocio': ['ambulante', 'pequeno_estanco', 'franquicia', 'distribuidor', 'marca_propia', 'fabrica', 'marketing', 'global', 'emperador'],
+            'Ingresos Pasivos': ['passive_income_1', 'passive_income_10', 'passive_income_100', 'passive_income_1000'],
+            'Prestigio': ['first_prestige', 'prestige_master', 'prestige_legend', 'prestige_god'],
+            'Especiales': ['speed_demon', 'patient_player', 'dedicated_player', 'business_mogul', 'completionist']
+        };
+
+        // Renderizar por categorías
+        Object.entries(categories).forEach(([categoryName, achievementIds]) => {
+            const categoryAchievements = achievementIds.map(id =>
+                this.achievements.find(achievement => achievement.id === id)
+            ).filter(Boolean);
+
+            if (categoryAchievements.length > 0) {
+                // Crear título de categoría
+                const categoryTitle = document.createElement('div');
+                categoryTitle.className = 'achievement-category';
+                categoryTitle.innerHTML = `<h4>${categoryName}</h4>`;
+                achievementsList.appendChild(categoryTitle);
+
+                // Añadir logros de la categoría
+                categoryAchievements.forEach(achievement => {
+                    const achievementElement = document.createElement('div');
+                    achievementElement.className = `achievement ${achievement.unlocked ? 'unlocked' : 'locked'}`;
+                    achievementElement.innerHTML = `
+                        <span class="achievement-icon">${achievement.icon}</span>
+                        <div class="achievement-text">
+                            <div class="achievement-name">${achievement.name}</div>
+                            <div class="achievement-description">${achievement.description}</div>
+                        </div>
+                    `;
+                    achievementsList.appendChild(achievementElement);
+                });
+            }
+        });
+    }
+
+    renderBusinessUpgrades() {
+        const container = document.getElementById('business-upgrades-container');
+        if (!container) return;
+
+        // Limpiar contenedor
+        container.innerHTML = '';
+
+        // Generar cada upgrade dinámicamente
+        Object.entries(this.businessUpgrades).forEach(([upgradeId, upgrade]) => {
+            const upgradeElement = document.createElement('div');
+            upgradeElement.className = 'upgrade business-upgrade';
+            upgradeElement.id = `upgrade-${upgradeId}`;
+
+            upgradeElement.innerHTML = `
+                <div class="upgrade-info">
+                    <span class="upgrade-icon">${upgrade.icon}</span>
+                    <div class="upgrade-details">
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="upgrade-benefit">+${this.formatNumber(upgrade.incomeBonus)}€/seg</div>
+                        <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                    </div>
+                </div>
+                <div class="upgrade-cost">
+                    <span class="price">${this.formatNumber(upgrade.baseCost)}</span>€
                 </div>
             `;
-            achievementsList.appendChild(achievementElement);
+
+            container.appendChild(upgradeElement);
         });
+
+        // Después de renderizar, actualizar los precios y estados
+        setTimeout(() => {
+            this.updateBusinessDisplay();
+        }, 100);
     }
 
     showNotification(message) {
@@ -1116,7 +1405,25 @@ class EstancoClicker {
             }
 
             if (gameData.businessUpgrades) {
+                // Migrar datos antiguos a la nueva estructura
+                const oldToNewMapping = {
+                    'pequeno_estanco': 'mini_estanco',
+                    'marketing': 'publicidad',
+                    'global': 'exportador'
+                };
+
+                // Primero, aplicar los datos guardados
                 Object.assign(this.businessUpgrades, gameData.businessUpgrades);
+
+                // Luego, migrar datos de IDs antiguos a nuevos si existen
+                Object.entries(oldToNewMapping).forEach(([oldId, newId]) => {
+                    if (gameData.businessUpgrades[oldId] && this.businessUpgrades[newId]) {
+                        // Si el upgrade antiguo tenía compras, transferirlas al nuevo
+                        if (gameData.businessUpgrades[oldId].count > 0) {
+                            this.businessUpgrades[newId].count = gameData.businessUpgrades[oldId].count;
+                        }
+                    }
+                });
             }
 
             if (gameData.achievements) {
@@ -1126,9 +1433,33 @@ class EstancoClicker {
             // Recalcular el dinero por click basado en las mejoras cargadas
             this.moneyPerClick = this.calculateMoneyPerClick();
 
+            // Recalcular ingresos por segundo
+            this.recalculateIncomePerSecond();
+
+            // Recalcular clicks por segundo
+            this.recalculateClicksPerSecond();
+
             // Actualizar slider de volumen
             document.getElementById('volume-slider').value = this.musicVolume * 100;
         }
+    }
+
+    recalculateIncomePerSecond() {
+        this.incomePerSecond = 0;
+        const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
+
+        Object.values(this.businessUpgrades).forEach(upgrade => {
+            this.incomePerSecond += upgrade.count * upgrade.incomeBonus * prestigeMultiplier;
+        });
+    }
+
+    recalculateClicksPerSecond() {
+        this.clicksPerSecond = 0;
+        const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
+
+        Object.values(this.autoClickUpgrades).forEach(upgrade => {
+            this.clicksPerSecond += upgrade.count * upgrade.clicksPerSecond * prestigeMultiplier;
+        });
     }
 
     // Métodos auxiliares para logros especiales
@@ -1157,5 +1488,5 @@ class EstancoClicker {
 
 // Inicializar el juego cuando se carga la página
 document.addEventListener('DOMContentLoaded', () => {
-    new EstancoClicker();
+    window.game = new EstancoClicker();
 });
