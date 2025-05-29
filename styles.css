@@ -15,6 +15,7 @@ body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    overflow-x: hidden;
 }
 
 .game-container {
@@ -183,6 +184,7 @@ body {
     grid-template-columns: 400px 1fr;
     gap: 20px;
     flex: 1;
+    min-height: 0; /* Importante para que el grid funcione correctamente */
 }
 
 .click-area-container {
@@ -198,6 +200,7 @@ body {
     overflow-y: auto;
     height: 100%;
     padding-right: 10px;
+    min-height: 0; /* Importante para que el scroll funcione */
 }
 
 .scrollable-content::-webkit-scrollbar {
@@ -713,33 +716,75 @@ body {
     }
 }
 
-@media (max-width: 1920px) and (max-height: 1080px) {
+/* Escritorio grande - Layout fijo con scroll solo en mejoras */
+@media (min-width: 1200px) and (min-height: 800px) {
+    body {
+        overflow: hidden; /* Evitar scroll en la página */
+    }
+
     .game-container {
-        min-height: auto;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .game-main {
+        height: calc(100vh - 200px); /* Ajustar según altura del header */
+        overflow: hidden;
+    }
+
+    .scrollable-content {
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .click-area-container {
+        height: fit-content;
+        max-height: 100%;
+        overflow: visible;
+    }
+}
+
+/* Pantallas medianas - Permitir scroll normal */
+@media (max-width: 1199px) or (max-height: 799px) {
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .game-container {
+        min-height: 100vh;
+        height: auto;
     }
 
     .game-main {
         min-height: auto;
+        height: auto;
     }
 
     .scrollable-content {
-        max-height: none;
-        overflow-y: auto;
+        height: auto;
+        overflow-y: visible;
     }
 }
 
+/* Móviles - Layout vertical con scroll normal */
 @media (max-width: 768px) {
     body {
         min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     .game-container {
         min-height: 100vh;
+        height: auto;
         padding: 10px;
     }
 
     .game-main {
         grid-template-columns: 1fr;
+        height: auto;
+        min-height: auto;
     }
 
     .click-area-container {
