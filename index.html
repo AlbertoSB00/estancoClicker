@@ -26,6 +26,14 @@
                     <span class="label">📈 Ingresos/seg:</span>
                     <span id="income-per-second">0</span>€/s
                 </div>
+                <div class="clicks-per-second">
+                    <span class="label">🖱️ Clicks/seg:</span>
+                    <span id="clicks-per-second">0</span>/s
+                </div>
+                <div class="money-per-click">
+                    <span class="label">👆 €/click:</span>
+                    <span id="money-per-click">1</span>€
+                </div>
                 <div class="prestige-info">
                     <span class="label">⭐ Prestigio:</span>
                     <span id="prestige-level">0</span>
@@ -58,7 +66,85 @@
             <div class="scrollable-content">
 
             <div class="upgrades-panel">
-                <h3>🚀 Evolución del Negocio</h3>
+                <h3>�️ Mejoras de Clicks Automáticos</h3>
+                <div class="upgrades-list">
+                    <div class="upgrade auto-click-upgrade" id="upgrade-cursor">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🖱️</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Cursor Automático</div>
+                                <div class="upgrade-description">Hace clicks automáticamente</div>
+                                <div class="upgrade-benefit">+1 click/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">15</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade auto-click-upgrade" id="upgrade-autoclicker">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">⚡</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Auto-Clicker</div>
+                                <div class="upgrade-description">Dispositivo de clicks rápidos</div>
+                                <div class="upgrade-benefit">+5 clicks/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">100</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade auto-click-upgrade" id="upgrade-clickbot">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🤖</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Click-Bot</div>
+                                <div class="upgrade-description">Robot especializado en clicks</div>
+                                <div class="upgrade-benefit">+15 clicks/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">500</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade auto-click-upgrade" id="upgrade-clickfarm">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🏭</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Granja de Clicks</div>
+                                <div class="upgrade-description">Instalación masiva de auto-clicks</div>
+                                <div class="upgrade-benefit">+50 clicks/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">2500</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade auto-click-upgrade" id="upgrade-clickmatrix">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🌐</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Matrix de Clicks</div>
+                                <div class="upgrade-description">Red global de clicks automáticos</div>
+                                <div class="upgrade-benefit">+200 clicks/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">15000</span>€
+                        </div>
+                    </div>
+                </div>
+
+                <h3>�🚀 Evolución del Negocio</h3>
                 <div class="upgrades-list">
                     <div class="upgrade business-upgrade" id="upgrade-ambulante">
                         <div class="upgrade-info">
@@ -66,7 +152,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Puesto Ambulante</div>
                                 <div class="upgrade-description">Monta un pequeño puesto móvil</div>
-                                <div class="upgrade-benefit">+2€ por click, +0.5€/seg</div>
+                                <div class="upgrade-benefit">+0.5€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -81,7 +167,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Pequeño Estanco</div>
                                 <div class="upgrade-description">Abre un pequeño estanco de barrio</div>
-                                <div class="upgrade-benefit">+5€ por click, +2€/seg</div>
+                                <div class="upgrade-benefit">+2€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -96,7 +182,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Franquicia Local</div>
                                 <div class="upgrade-description">Expande con una franquicia local</div>
-                                <div class="upgrade-benefit">+12€ por click, +8€/seg</div>
+                                <div class="upgrade-benefit">+8€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -111,7 +197,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Distribuidor Regional</div>
                                 <div class="upgrade-description">Distribuye a múltiples establecimientos</div>
-                                <div class="upgrade-benefit">+30€ por click, +25€/seg</div>
+                                <div class="upgrade-benefit">+25€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -126,7 +212,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Marca Propia de Tabaco</div>
                                 <div class="upgrade-description">Crea tu propia marca de cigarrillos</div>
-                                <div class="upgrade-benefit">+75€ por click, +60€/seg</div>
+                                <div class="upgrade-benefit">+60€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -141,7 +227,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Fábrica de Producción</div>
                                 <div class="upgrade-description">Produce tabaco a gran escala</div>
-                                <div class="upgrade-benefit">+200€ por click, +150€/seg</div>
+                                <div class="upgrade-benefit">+150€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -156,7 +242,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Magnate del Marketing</div>
                                 <div class="upgrade-description">Domina la publicidad y el marketing</div>
-                                <div class="upgrade-benefit">+500€ por click, +400€/seg</div>
+                                <div class="upgrade-benefit">+400€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -171,7 +257,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Empresario Global</div>
                                 <div class="upgrade-description">Expande tu imperio mundialmente</div>
-                                <div class="upgrade-benefit">+1250€ por click, +1000€/seg</div>
+                                <div class="upgrade-benefit">+1000€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>
@@ -186,7 +272,7 @@
                             <div class="upgrade-details">
                                 <div class="upgrade-name">Emperador del Tabaco</div>
                                 <div class="upgrade-description">Controla el mercado mundial del tabaco</div>
-                                <div class="upgrade-benefit">+3000€ por click, +2500€/seg</div>
+                                <div class="upgrade-benefit">+2500€/seg</div>
                                 <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
                             </div>
                         </div>

@@ -11,12 +11,51 @@ class EstancoClicker {
         this.totalLifetimeEarnings = 0;
         this.musicVolume = 0.8;
         this.musicPlaying = true; // Por defecto activada
+        this.clicksPerSecond = 0; // Clicks automáticos por segundo
+
+        // Mejoras de clicks automáticos
+        this.autoClickUpgrades = {
+            cursor: {
+                count: 0,
+                baseCost: 15,
+                clicksPerSecond: 1,
+                name: "Cursor Automático",
+                description: "Hace clicks automáticamente"
+            },
+            autoclicker: {
+                count: 0,
+                baseCost: 100,
+                clicksPerSecond: 5,
+                name: "Auto-Clicker",
+                description: "Dispositivo de clicks rápidos"
+            },
+            clickbot: {
+                count: 0,
+                baseCost: 500,
+                clicksPerSecond: 15,
+                name: "Click-Bot",
+                description: "Robot especializado en clicks"
+            },
+            clickfarm: {
+                count: 0,
+                baseCost: 2500,
+                clicksPerSecond: 50,
+                name: "Granja de Clicks",
+                description: "Instalación masiva de auto-clicks"
+            },
+            clickmatrix: {
+                count: 0,
+                baseCost: 15000,
+                clicksPerSecond: 200,
+                name: "Matrix de Clicks",
+                description: "Red global de clicks automáticos"
+            }
+        };
 
         this.businessUpgrades = {
             ambulante: {
                 count: 0,
                 baseCost: 15,
-                clickBonus: 2,
                 incomeBonus: 0.5,
                 level: 2,
                 name: "Puesto Ambulante",
@@ -27,7 +66,6 @@ class EstancoClicker {
             pequeno_estanco: {
                 count: 0,
                 baseCost: 100,
-                clickBonus: 5,
                 incomeBonus: 2,
                 level: 3,
                 name: "Pequeño Estanco",
@@ -38,7 +76,6 @@ class EstancoClicker {
             franquicia: {
                 count: 0,
                 baseCost: 500,
-                clickBonus: 12,
                 incomeBonus: 8,
                 level: 4,
                 name: "Franquicia Local",
@@ -49,7 +86,6 @@ class EstancoClicker {
             distribuidor: {
                 count: 0,
                 baseCost: 2500,
-                clickBonus: 30,
                 incomeBonus: 25,
                 level: 5,
                 name: "Distribuidor Regional",
@@ -60,7 +96,6 @@ class EstancoClicker {
             marca_propia: {
                 count: 0,
                 baseCost: 12000,
-                clickBonus: 75,
                 incomeBonus: 60,
                 level: 6,
                 name: "Marca Propia de Tabaco",
@@ -71,7 +106,6 @@ class EstancoClicker {
             fabrica: {
                 count: 0,
                 baseCost: 60000,
-                clickBonus: 200,
                 incomeBonus: 150,
                 level: 7,
                 name: "Fábrica de Producción",
@@ -82,7 +116,6 @@ class EstancoClicker {
             marketing: {
                 count: 0,
                 baseCost: 300000,
-                clickBonus: 500,
                 incomeBonus: 400,
                 level: 8,
                 name: "Magnate del Marketing",
@@ -93,7 +126,6 @@ class EstancoClicker {
             global: {
                 count: 0,
                 baseCost: 1500000,
-                clickBonus: 1250,
                 incomeBonus: 1000,
                 level: 9,
                 name: "Empresario Global",
@@ -104,7 +136,6 @@ class EstancoClicker {
             emperador: {
                 count: 0,
                 baseCost: 10000000,
-                clickBonus: 3000,
                 incomeBonus: 2500,
                 level: 10,
                 name: "Emperador del Tabaco",
@@ -141,8 +172,10 @@ class EstancoClicker {
         this.bindEvents();
         this.updateDisplay();
         this.updateBusinessDisplay();
+        this.updateAutoClickUpgradesDisplay();
         this.renderAchievements(); // Renderizar logros al inicio
         this.startIncomeLoop();
+        this.startAutoClickLoop();
         this.checkAchievements();
         this.initAudio();
     }
@@ -151,6 +184,13 @@ class EstancoClicker {
         // Click principal
         document.getElementById('main-click').addEventListener('click', (e) => {
             this.handleMainClick(e);
+        });
+
+        // Mejoras de clicks automáticos
+        document.querySelectorAll('.auto-click-upgrade').forEach(upgrade => {
+            upgrade.addEventListener('click', (e) => {
+                this.handleAutoClickUpgradeClick(e);
+            });
         });
 
         // Mejoras de negocio
@@ -226,6 +266,31 @@ class EstancoClicker {
         this.saveGame();
     }
 
+    handleAutoClickUpgradeClick(e) {
+        const upgradeId = e.currentTarget.id.replace('upgrade-', '');
+        const upgrade = this.autoClickUpgrades[upgradeId];
+
+        if (upgrade) {
+            const cost = this.getAutoClickUpgradeCost(upgradeId);
+
+            if (this.money >= cost) {
+                this.money -= cost;
+                upgrade.count++;
+
+                // Añadir clicks por segundo con bonus de prestigio
+                const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
+                this.clicksPerSecond += upgrade.clicksPerSecond * prestigeMultiplier;
+
+                this.updateDisplay();
+                this.updateAutoClickUpgradesDisplay();
+                this.checkAchievements();
+                this.saveGame();
+
+                this.showNotification(`¡${upgrade.name} comprado! +${upgrade.clicksPerSecond} clicks/seg`);
+            }
+        }
+    }
+
     handleBusinessUpgradeClick(e) {
         const upgradeId = e.currentTarget.id.replace('upgrade-', '');
         const upgrade = this.businessUpgrades[upgradeId];
@@ -256,28 +321,25 @@ class EstancoClicker {
         }
     }
 
+    getAutoClickUpgradeCost(upgradeId) {
+        const upgrade = this.autoClickUpgrades[upgradeId];
+        return Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.count));
+    }
+
     getBusinessUpgradeCost(upgradeId) {
         const upgrade = this.businessUpgrades[upgradeId];
         return Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.count));
     }
 
     calculateMoneyPerClick() {
+        // El dinero por click ahora es fijo: 1€ base + bonus de prestigio
         let baseClick = 1;
-        let highestLevel = 1;
-
-        // Encontrar el nivel más alto desbloqueado
-        Object.values(this.businessUpgrades).forEach(upgrade => {
-            if (upgrade.count > 0 && upgrade.level > highestLevel) {
-                highestLevel = upgrade.level;
-                baseClick = upgrade.clickBonus;
-            }
-        });
 
         // Aplicar bonus de prestigio (10% por nivel de prestigio)
         const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
         const finalClick = Math.floor(baseClick * prestigeMultiplier);
 
-        // Asegurar que siempre sea al menos 1, incluso con prestigio
+        // Asegurar que siempre sea al menos 1
         return Math.max(1, finalClick);
     }
 
@@ -308,9 +370,15 @@ class EstancoClicker {
         // Resetear progreso pero mantener prestigio
         this.money = 0;
         this.incomePerSecond = 0;
+        this.clicksPerSecond = 0;
         this.totalClicks = 0;
         this.totalEarned = 0;
         this.currentBusinessLevel = 1;
+
+        // Resetear mejoras de clicks automáticos
+        Object.values(this.autoClickUpgrades).forEach(upgrade => {
+            upgrade.count = 0;
+        });
 
         // Resetear mejoras de negocio
         Object.values(this.businessUpgrades).forEach(upgrade => {
@@ -340,12 +408,18 @@ class EstancoClicker {
         this.money = 0;
         this.moneyPerClick = 1;
         this.incomePerSecond = 0;
+        this.clicksPerSecond = 0;
         this.totalClicks = 0;
         this.totalEarned = 0;
         this.currentBusinessLevel = 1;
         this.prestigeLevel = 0;
         this.prestigePoints = 0;
         this.totalLifetimeEarnings = 0;
+
+        // Resetear mejoras de clicks automáticos
+        Object.values(this.autoClickUpgrades).forEach(upgrade => {
+            upgrade.count = 0;
+        });
 
         // Resetear mejoras de negocio
         Object.values(this.businessUpgrades).forEach(upgrade => {
@@ -765,6 +839,56 @@ class EstancoClicker {
         }, 100);
     }
 
+    startAutoClickLoop() {
+        setInterval(() => {
+            if (this.clicksPerSecond > 0) {
+                const clicks = this.clicksPerSecond / 10; // Dividido por 10 porque se ejecuta cada 100ms
+                const earnings = clicks * this.moneyPerClick;
+                this.money += earnings;
+                this.totalEarned += earnings;
+                this.totalClicks += clicks;
+                this.updateDisplay();
+            }
+        }, 100);
+    }
+
+    updateAutoClickUpgradesDisplay() {
+        // Actualizar contadores de mejoras de clicks automáticos y costos
+        Object.keys(this.autoClickUpgrades).forEach(upgradeId => {
+            const upgrade = this.autoClickUpgrades[upgradeId];
+            const upgradeElement = document.getElementById(`upgrade-${upgradeId}`);
+
+            if (upgradeElement) {
+                const countElement = upgradeElement.querySelector('.count');
+                const priceElement = upgradeElement.querySelector('.price');
+
+                if (countElement) countElement.textContent = upgrade.count;
+                if (priceElement) priceElement.textContent = this.getAutoClickUpgradeCost(upgradeId);
+
+                // Marcar si es asequible
+                const cost = this.getAutoClickUpgradeCost(upgradeId);
+                if (this.money >= cost) {
+                    upgradeElement.classList.add('affordable');
+                } else {
+                    upgradeElement.classList.remove('affordable');
+                }
+
+                // Marcar si ya está adquirido
+                if (upgrade.count > 0) {
+                    upgradeElement.classList.add('owned');
+                } else {
+                    upgradeElement.classList.remove('owned');
+                }
+            }
+        });
+
+        // Actualizar display de clicks por segundo
+        const clicksPerSecDisplay = document.getElementById('clicks-per-second');
+        if (clicksPerSecDisplay) {
+            clicksPerSecDisplay.textContent = this.formatNumber(this.clicksPerSecond.toFixed(1));
+        }
+    }
+
     checkAchievements() {
         // Definir los requisitos de logros (se pierden al cargar desde localStorage)
         const achievementRequirements = {
@@ -854,6 +978,7 @@ class EstancoClicker {
             money: this.money,
             moneyPerClick: this.moneyPerClick,
             incomePerSecond: this.incomePerSecond,
+            clicksPerSecond: this.clicksPerSecond,
             totalClicks: this.totalClicks,
             totalEarned: this.totalEarned,
             currentBusinessLevel: this.currentBusinessLevel,
@@ -861,6 +986,7 @@ class EstancoClicker {
             prestigePoints: this.prestigePoints,
             totalLifetimeEarnings: this.totalLifetimeEarnings,
             musicVolume: this.musicVolume,
+            autoClickUpgrades: this.autoClickUpgrades,
             businessUpgrades: this.businessUpgrades,
             achievements: this.achievements
         };
@@ -886,6 +1012,7 @@ class EstancoClicker {
             this.money = gameData.money || 0;
             this.moneyPerClick = gameData.moneyPerClick || 1;
             this.incomePerSecond = gameData.incomePerSecond || 0;
+            this.clicksPerSecond = gameData.clicksPerSecond || 0;
             this.totalClicks = gameData.totalClicks || 0;
             this.totalEarned = gameData.totalEarned || 0;
             this.currentBusinessLevel = gameData.currentBusinessLevel || 1;
@@ -893,6 +1020,10 @@ class EstancoClicker {
             this.prestigePoints = gameData.prestigePoints || 0;
             this.totalLifetimeEarnings = gameData.totalLifetimeEarnings || 0;
             this.musicVolume = gameData.musicVolume || 0.5;
+
+            if (gameData.autoClickUpgrades) {
+                Object.assign(this.autoClickUpgrades, gameData.autoClickUpgrades);
+            }
 
             if (gameData.businessUpgrades) {
                 Object.assign(this.businessUpgrades, gameData.businessUpgrades);
