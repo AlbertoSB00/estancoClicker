@@ -926,16 +926,31 @@ class EstancoClicker {
 
     renderAchievements() {
         const achievementsList = document.getElementById('achievements-list');
+        const achievementsCount = document.getElementById('achievements-count');
+        const achievementsTotal = document.getElementById('achievements-total');
+
+        if (!achievementsList) return;
+
+        // Limpiar lista actual
         achievementsList.innerHTML = '';
 
-        this.achievements.filter(a => a.unlocked).forEach(achievement => {
+        // Contar logros desbloqueados
+        const unlockedCount = this.achievements.filter(achievement => achievement.unlocked).length;
+        const totalCount = this.achievements.length;
+
+        // Actualizar contador
+        if (achievementsCount) achievementsCount.textContent = unlockedCount;
+        if (achievementsTotal) achievementsTotal.textContent = totalCount;
+
+        // Mostrar TODOS los logros
+        this.achievements.forEach(achievement => {
             const achievementElement = document.createElement('div');
-            achievementElement.className = 'achievement';
+            achievementElement.className = `achievement ${achievement.unlocked ? 'unlocked' : 'locked'}`;
             achievementElement.innerHTML = `
                 <span class="achievement-icon">${achievement.icon}</span>
                 <div class="achievement-text">
-                    <div>${achievement.name}</div>
-                    <div style="font-size: 0.8em; color: #666;">${achievement.description}</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-description">${achievement.description}</div>
                 </div>
             `;
             achievementsList.appendChild(achievementElement);

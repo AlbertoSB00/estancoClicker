@@ -136,33 +136,48 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-}
-
-.stats {
     display: flex;
-    justify-content: space-around;
-    font-size: 1.3em;
-    font-weight: bold;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     gap: 15px;
 }
 
-.stats > div {
-    background: rgba(0,0,0,0.2);
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    min-width: 150px;
-    text-align: center;
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
-.prestige-info {
-    color: #FFD700;
+.stats-compact {
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 12px;
 }
 
-.prestige-bonus {
-    font-size: 0.9em;
-    color: #90EE90;
+.stats-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.stats-row:last-child {
+    margin-bottom: 0;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+.stat-icon {
+    font-size: 1.1em;
 }
 
 .game-main {
@@ -617,13 +632,24 @@ body {
 }
 
 .achievement {
-    background: linear-gradient(145deg, #FFD700 0%, #FFA500 100%);
-    border: 2px solid #FF8C00;
     border-radius: 8px;
     padding: 10px;
     margin-bottom: 8px;
     display: flex;
     align-items: center;
+    transition: all 0.3s ease;
+}
+
+.achievement.unlocked {
+    background: linear-gradient(145deg, #FFD700 0%, #FFA500 100%);
+    border: 2px solid #FF8C00;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.achievement.locked {
+    background: linear-gradient(145deg, #888 0%, #666 100%);
+    border: 2px solid #555;
+    opacity: 0.6;
 }
 
 .achievement-icon {
@@ -634,7 +660,25 @@ body {
 .achievement-text {
     flex: 1;
     font-weight: bold;
+}
+
+.achievement.unlocked .achievement-text {
     color: #8B4513;
+}
+
+.achievement.locked .achievement-text {
+    color: #ccc;
+}
+
+.achievement-name {
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+
+.achievement-description {
+    font-size: 0.85em;
+    opacity: 0.8;
+    font-weight: normal;
 }
 
 .floating-money {

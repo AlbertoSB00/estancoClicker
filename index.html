@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fumadero Tycoon - El Imperio del Tabaco</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzJGMUIxNCIvPgo8cmVjdCB4PSI1IiB5PSIxNSIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiNGRkZGRkYiLz4KPHJlY3QgeD0iNSIgeT0iMjIiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjRkZGRkZGIi8+CjxyZWN0IHg9IjMwIiB5PSIxMCIgd2lkdGg9IjgiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjOEI0NTEzIi8+CjxjaXJjbGUgY3g9IjM0IiBjeT0iMTIiIHI9IjIiIGZpbGw9IiNGRkQ3MDAiLz4KPGNpcmNsZSBjeD0iMzQiIGN5PSIyOCIgcj0iMiIgZmlsbD0iI0ZGRDcwMCIvPgo8L3N2Zz4K">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,28 +17,34 @@
                 </div>
                 <button id="reset-btn" class="reset-button">🗑️ RESET COMPLETO</button>
             </div>
-            <h1>🚬 Fumadero Tycoon</h1>
-            <div class="stats">
-                <div class="money">
-                    <span class="label">💰 Dinero:</span>
-                    <span id="money">0</span>€
+            <h1>
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzJGMUIxNCIvPgo8cmVjdCB4PSI1IiB5PSIxNSIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiNGRkZGRkYiLz4KPHJlY3QgeD0iNSIgeT0iMjIiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjRkZGRkZGIi8+CjxyZWN0IHg9IjMwIiB5PSIxMCIgd2lkdGg9IjgiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjOEI0NTEzIi8+CjxjaXJjbGUgY3g9IjM0IiBjeT0iMTIiIHI9IjIiIGZpbGw9IiNGRkQ3MDAiLz4KPGNpcmNsZSBjeD0iMzQiIGN5PSIyOCIgcj0iMiIgZmlsbD0iI0ZGRDcwMCIvPgo8L3N2Zz4K" alt="Logo" class="logo-icon">
+                Fumadero Tycoon
+            </h1>
+            <div class="stats-compact">
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-icon">💰</span>
+                        <span id="money">0</span>€
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">📈</span>
+                        <span id="income-per-second">0</span>€/s
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">🖱️</span>
+                        <span id="clicks-per-second">0</span>/s
+                    </div>
                 </div>
-                <div class="income">
-                    <span class="label">📈 Ingresos/seg:</span>
-                    <span id="income-per-second">0</span>€/s
-                </div>
-                <div class="clicks-per-second">
-                    <span class="label">🖱️ Clicks/seg:</span>
-                    <span id="clicks-per-second">0</span>/s
-                </div>
-                <div class="money-per-click">
-                    <span class="label">👆 €/click:</span>
-                    <span id="money-per-click">1</span>€
-                </div>
-                <div class="prestige-info">
-                    <span class="label">⭐ Prestigio:</span>
-                    <span id="prestige-level">0</span>
-                    <span class="prestige-bonus">(+<span id="prestige-bonus">0%</span>)</span>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-icon">👆</span>
+                        <span id="money-per-click">1</span>€
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">⭐</span>
+                        Lv.<span id="prestige-level">0</span> (+<span id="prestige-bonus">0%</span>)
+                    </div>
                 </div>
             </div>
         </header>
@@ -321,7 +328,7 @@
             </div>
 
             <div class="achievements">
-                <h3>🏆 Logros</h3>
+                <h3>🏆 Logros (<span id="achievements-count">0</span>/<span id="achievements-total">0</span>)</h3>
                 <div class="achievements-list" id="achievements-list">
                     <!-- Los logros se generarán dinámicamente -->
                 </div>
