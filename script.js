@@ -543,18 +543,18 @@ class EstancoClicker {
 
     canPrestige() {
         // El prestigio debe costar más que el último rango (Emperador del Tabaco: 10M€)
-        return this.totalEarned >= 25000000; // Requiere 25 millones para prestigio
+        return this.totalEarned >= 25000000000; // Requiere 25 billones para prestigio
     }
 
     calculatePrestigePoints() {
         if (!this.canPrestige()) return 0;
-        // Calcular puntos basado en el nuevo requisito (25M base)
-        return Math.floor(Math.sqrt(this.totalEarned / 25000000));
+        // Calcular puntos basado en el nuevo requisito (25B base)
+        return Math.floor(Math.sqrt(this.totalEarned / 25000000000));
     }
 
     doPrestige() {
         if (!this.canPrestige()) {
-            this.showNotification("¡Necesitas ganar al menos 25,000,000€ para hacer prestigio!");
+            this.showNotification("¡Necesitas ganar al menos 25,000,000,000€ para hacer prestigio!");
             return;
         }
 
