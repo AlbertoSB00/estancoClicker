@@ -7,9 +7,8 @@
 body {
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #8B4513 100%);
-    height: 100vh;
+    min-height: 100vh;
     color: #2F1B14;
-    overflow: hidden;
     margin: 0;
     padding: 0;
     user-select: none;
@@ -22,10 +21,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .game-header {
@@ -175,8 +173,6 @@ body {
     grid-template-columns: 400px 1fr;
     gap: 20px;
     flex: 1;
-    overflow: hidden;
-    min-height: 0;
 }
 
 .click-area-container {
@@ -692,20 +688,33 @@ body {
     }
 }
 
+@media (max-width: 1920px) and (max-height: 1080px) {
+    .game-container {
+        min-height: auto;
+    }
+
+    .game-main {
+        min-height: auto;
+    }
+
+    .scrollable-content {
+        max-height: none;
+        overflow-y: auto;
+    }
+}
+
 @media (max-width: 768px) {
     body {
-        height: 100vh;
-        overflow: hidden;
+        min-height: 100vh;
     }
 
     .game-container {
-        height: 100vh;
+        min-height: 100vh;
         padding: 10px;
     }
 
     .game-main {
         grid-template-columns: 1fr;
-        overflow: hidden;
     }
 
     .click-area-container {
@@ -714,8 +723,8 @@ body {
     }
 
     .scrollable-content {
-        height: 100%;
-        overflow-y: auto;
+        height: auto;
+        overflow-y: visible;
     }
 
     .stats {

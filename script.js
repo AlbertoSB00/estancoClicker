@@ -736,6 +736,7 @@ class EstancoClicker {
     updateDisplay() {
         document.getElementById('money').textContent = this.formatNumber(Math.floor(this.money));
         document.getElementById('income-per-second').textContent = this.formatNumber(this.incomePerSecond.toFixed(1));
+        document.getElementById('clicks-per-second').textContent = this.formatNumber(this.clicksPerSecond.toFixed(1));
         document.getElementById('money-per-click').textContent = this.formatNumber(this.moneyPerClick);
 
         // Actualizar información de prestigio
@@ -798,6 +799,9 @@ class EstancoClicker {
                 }
             }
         });
+
+        // También actualizar las mejoras de clicks automáticos
+        this.updateAutoClickUpgradesDisplay();
     }
 
 
