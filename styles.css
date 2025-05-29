@@ -136,16 +136,6 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
-
-.logo-icon {
-    width: 48px;
-    height: 48px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
 .stats-compact {

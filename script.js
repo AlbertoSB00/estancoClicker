@@ -21,34 +21,6 @@ class EstancoClicker {
                 clicksPerSecond: 1,
                 name: "Cursor Automático",
                 description: "Hace clicks automáticamente"
-            },
-            autoclicker: {
-                count: 0,
-                baseCost: 100,
-                clicksPerSecond: 5,
-                name: "Auto-Clicker",
-                description: "Dispositivo de clicks rápidos"
-            },
-            clickbot: {
-                count: 0,
-                baseCost: 500,
-                clicksPerSecond: 15,
-                name: "Click-Bot",
-                description: "Robot especializado en clicks"
-            },
-            clickfarm: {
-                count: 0,
-                baseCost: 2500,
-                clicksPerSecond: 50,
-                name: "Granja de Clicks",
-                description: "Instalación masiva de auto-clicks"
-            },
-            clickmatrix: {
-                count: 0,
-                baseCost: 15000,
-                clicksPerSecond: 200,
-                name: "Matrix de Clicks",
-                description: "Red global de clicks automáticos"
             }
         };
 
@@ -397,6 +369,7 @@ class EstancoClicker {
 
         this.updateDisplay();
         this.updateBusinessDisplay();
+        this.updateAutoClickUpgradesDisplay();
         this.renderAchievements();
         this.saveGame();
 
@@ -438,6 +411,7 @@ class EstancoClicker {
         // Actualizar interfaz
         this.updateDisplay();
         this.updateBusinessDisplay();
+        this.updateAutoClickUpgradesDisplay();
         this.renderAchievements();
 
         this.showNotification('¡Juego reseteado completamente! Empezando desde cero...');
@@ -863,7 +837,7 @@ class EstancoClicker {
                 const priceElement = upgradeElement.querySelector('.price');
 
                 if (countElement) countElement.textContent = upgrade.count;
-                if (priceElement) priceElement.textContent = this.getAutoClickUpgradeCost(upgradeId);
+                if (priceElement) priceElement.textContent = this.formatNumber(this.getAutoClickUpgradeCost(upgradeId));
 
                 // Marcar si es asequible
                 const cost = this.getAutoClickUpgradeCost(upgradeId);
