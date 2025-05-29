@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fumadero Tycoon - El Imperio del Tabaco</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <div class="header-controls">
+                <div class="volume-control">
+                    <button id="volume-btn" class="volume-button">🔊</button>
+                    <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="80">
+                </div>
+                <button id="reset-btn" class="reset-button">🗑️ RESET COMPLETO</button>
+            </div>
+            <h1>🚬 Fumadero Tycoon</h1>
+            <div class="stats">
+                <div class="money">
+                    <span class="label">💰 Dinero:</span>
+                    <span id="money">0</span>€
+                </div>
+                <div class="income">
+                    <span class="label">📈 Ingresos/seg:</span>
+                    <span id="income-per-second">0</span>€/s
+                </div>
+                <div class="prestige-info">
+                    <span class="label">⭐ Prestigio:</span>
+                    <span id="prestige-level">0</span>
+                    <span class="prestige-bonus">(+<span id="prestige-bonus">0%</span>)</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="click-area-container">
+                <div class="estanco-building">
+                    <div class="estanco-sign" id="business-sign">VENDIENDO CIGARRILLOS</div>
+                    <div class="click-area" id="main-click">
+                        <div class="counter" id="main-icon">🚬</div>
+                        <div class="click-text" id="click-text">¡Haz click para vender cigarrillos!</div>
+                        <div class="money-per-click">+<span id="money-per-click">1</span>€</div>
+                    </div>
+                </div>
+
+                <div class="business-info">
+                    <h3>Tu Negocio Actual</h3>
+                    <div class="current-business" id="current-business">
+                        <div class="business-level">Nivel: <span id="business-level">1</span></div>
+                        <div class="business-name" id="business-name">Vendedor de Cigarrillos</div>
+                        <div class="business-description" id="business-description">Vendes cigarrillos sueltos en la calle</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scrollable-content">
+
+            <div class="upgrades-panel">
+                <h3>🚀 Evolución del Negocio</h3>
+                <div class="upgrades-list">
+                    <div class="upgrade business-upgrade" id="upgrade-ambulante">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🛒</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Puesto Ambulante</div>
+                                <div class="upgrade-description">Monta un pequeño puesto móvil</div>
+                                <div class="upgrade-benefit">+2€ por click, +0.5€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">15</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-pequeno_estanco">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🏪</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Pequeño Estanco</div>
+                                <div class="upgrade-description">Abre un pequeño estanco de barrio</div>
+                                <div class="upgrade-benefit">+5€ por click, +2€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">100</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-franquicia">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🏬</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Franquicia Local</div>
+                                <div class="upgrade-description">Expande con una franquicia local</div>
+                                <div class="upgrade-benefit">+12€ por click, +8€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">500</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-distribuidor">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🚚</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Distribuidor Regional</div>
+                                <div class="upgrade-description">Distribuye a múltiples establecimientos</div>
+                                <div class="upgrade-benefit">+30€ por click, +25€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">2500</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-marca_propia">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🏷️</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Marca Propia de Tabaco</div>
+                                <div class="upgrade-description">Crea tu propia marca de cigarrillos</div>
+                                <div class="upgrade-benefit">+75€ por click, +60€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">12000</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-fabrica">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🏭</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Fábrica de Producción</div>
+                                <div class="upgrade-description">Produce tabaco a gran escala</div>
+                                <div class="upgrade-benefit">+200€ por click, +150€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">60000</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-marketing">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">📺</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Magnate del Marketing</div>
+                                <div class="upgrade-description">Domina la publicidad y el marketing</div>
+                                <div class="upgrade-benefit">+500€ por click, +400€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">300000</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-global">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">🌍</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Empresario Global</div>
+                                <div class="upgrade-description">Expande tu imperio mundialmente</div>
+                                <div class="upgrade-benefit">+1250€ por click, +1000€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">1500000</span>€
+                        </div>
+                    </div>
+
+                    <div class="upgrade business-upgrade" id="upgrade-emperador">
+                        <div class="upgrade-info">
+                            <span class="upgrade-icon">👑</span>
+                            <div class="upgrade-details">
+                                <div class="upgrade-name">Emperador del Tabaco</div>
+                                <div class="upgrade-description">Controla el mercado mundial del tabaco</div>
+                                <div class="upgrade-benefit">+3000€ por click, +2500€/seg</div>
+                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                            </div>
+                        </div>
+                        <div class="upgrade-cost">
+                            <span class="price">10000000</span>€
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prestige-section">
+                    <h3>⭐ Sistema de Prestigio</h3>
+                    <div class="prestige-info-panel">
+                        <div class="prestige-stats">
+                            <div>Nivel de Prestigio: <span id="prestige-level-display">0</span></div>
+                            <div>Puntos de Prestigio: <span id="prestige-points">0</span></div>
+                            <div>Bonus Actual: +<span id="prestige-bonus-display">0%</span></div>
+                            <div>Próximos Puntos: <span id="next-prestige-points">0</span></div>
+                        </div>
+                        <button id="prestige-btn" class="prestige-button unavailable">
+                            🌟 HACER PRESTIGIO
+                            <div class="prestige-requirement">(Requiere 1M€ ganados)</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="save-system-section">
+                    <h3>💾 Sistema de Guardado</h3>
+                    <div class="save-system-panel">
+                        <div class="save-export">
+                            <h4>📤 Exportar Partida</h4>
+                            <button id="export-btn" class="save-button export">
+                                📋 GENERAR CÓDIGO
+                            </button>
+                            <textarea id="export-code" class="save-code" placeholder="Tu código de partida aparecerá aquí..." readonly></textarea>
+                        </div>
+
+                        <div class="save-import">
+                            <h4>📥 Importar Partida</h4>
+                            <textarea id="import-code" class="save-code" placeholder="Pega aquí tu código de partida..."></textarea>
+                            <button id="import-btn" class="save-button import">
+                                🔄 CARGAR PARTIDA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievements">
+                <h3>🏆 Logros</h3>
+                <div class="achievements-list" id="achievements-list">
+                    <!-- Los logros se generarán dinámicamente -->
+                </div>
+            </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="background-music.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
