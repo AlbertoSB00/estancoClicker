@@ -13,6 +13,11 @@ class EstancoClicker {
         this.musicPlaying = true; // Por defecto activada
         this.clicksPerSecond = 0; // Clicks automáticos por segundo
 
+        // Variables para logros especiales
+        this.gameStartTime = Date.now();
+        this.speedClickCount = 0;
+        this.speedClickStartTime = 0;
+
         // Mejoras de clicks automáticos
         this.autoClickUpgrades = {
             cursor: {
@@ -118,10 +123,29 @@ class EstancoClicker {
         };
 
         this.achievements = [
+            // Logros básicos
             { id: 'first_click', name: 'Primer Cliente', description: 'Haz tu primer click', icon: '🎉', unlocked: false },
             { id: 'hundred_euros', name: 'Primer Billete', description: 'Gana 100€', icon: '💶', unlocked: false },
-            { id: 'ambulante', name: 'Vendedor Ambulante', description: 'Monta tu puesto ambulante', icon: '🛒', unlocked: false },
             { id: 'thousand_euros', name: 'Mil Euros', description: 'Gana 1000€', icon: '💰', unlocked: false },
+            { id: 'ten_thousand_euros', name: 'Rico', description: 'Gana 10,000€', icon: '💸', unlocked: false },
+            { id: 'hundred_thousand_euros', name: 'Muy Rico', description: 'Gana 100,000€', icon: '🤑', unlocked: false },
+            { id: 'million_euros', name: 'Millonario', description: 'Gana 1,000,000€', icon: '💵', unlocked: false },
+            { id: 'millionaire', name: 'Multimillonario', description: 'Gana 25,000,000€', icon: '💎', unlocked: false },
+
+            // Logros de clicks
+            { id: 'click_master', name: 'Maestro del Click', description: 'Haz 1000 clicks', icon: '🖱️', unlocked: false },
+            { id: 'click_veteran', name: 'Veterano del Click', description: 'Haz 5000 clicks', icon: '⚡', unlocked: false },
+            { id: 'click_legend', name: 'Leyenda del Click', description: 'Haz 10,000 clicks', icon: '🔥', unlocked: false },
+            { id: 'click_god', name: 'Dios del Click', description: 'Haz 50,000 clicks', icon: '⚡', unlocked: false },
+
+            // Logros de cursores automáticos
+            { id: 'first_cursor', name: 'Primer Cursor', description: 'Compra tu primer cursor automático', icon: '🖱️', unlocked: false },
+            { id: 'cursor_collector', name: 'Coleccionista de Cursores', description: 'Compra 10 cursores automáticos', icon: '🖲️', unlocked: false },
+            { id: 'cursor_army', name: 'Ejército de Cursores', description: 'Compra 50 cursores automáticos', icon: '⚔️', unlocked: false },
+            { id: 'cursor_empire', name: 'Imperio de Cursores', description: 'Compra 100 cursores automáticos', icon: '🏰', unlocked: false },
+
+            // Logros de negocios
+            { id: 'ambulante', name: 'Vendedor Ambulante', description: 'Monta tu puesto ambulante', icon: '🛒', unlocked: false },
             { id: 'pequeno_estanco', name: 'Pequeño Comerciante', description: 'Abre tu pequeño estanco', icon: '🏪', unlocked: false },
             { id: 'franquicia', name: 'Franquiciado', description: 'Expande con una franquicia', icon: '🏬', unlocked: false },
             { id: 'distribuidor', name: 'Distribuidor Regional', description: 'Conviértete en distribuidor', icon: '🚚', unlocked: false },
@@ -130,10 +154,25 @@ class EstancoClicker {
             { id: 'marketing', name: 'Magnate del Marketing', description: 'Domina el marketing', icon: '📺', unlocked: false },
             { id: 'global', name: 'Empresario Global', description: 'Expande globalmente', icon: '🌍', unlocked: false },
             { id: 'emperador', name: 'Emperador del Tabaco', description: 'Domina el mundo', icon: '👑', unlocked: false },
-            { id: 'click_master', name: 'Maestro del Click', description: 'Haz 1000 clicks', icon: '🖱️', unlocked: false },
-            { id: 'millionaire', name: 'Multimillonario', description: 'Gana 25,000,000€', icon: '💎', unlocked: false },
+
+            // Logros de ingresos pasivos
+            { id: 'passive_income_1', name: 'Ingresos Pasivos', description: 'Genera 1€/seg en ingresos pasivos', icon: '📈', unlocked: false },
+            { id: 'passive_income_10', name: 'Flujo de Dinero', description: 'Genera 10€/seg en ingresos pasivos', icon: '💹', unlocked: false },
+            { id: 'passive_income_100', name: 'Máquina de Dinero', description: 'Genera 100€/seg en ingresos pasivos', icon: '🏦', unlocked: false },
+            { id: 'passive_income_1000', name: 'Imperio Financiero', description: 'Genera 1000€/seg en ingresos pasivos', icon: '🏛️', unlocked: false },
+
+            // Logros de prestigio
             { id: 'first_prestige', name: 'Primer Prestigio', description: 'Haz tu primer prestigio', icon: '⭐', unlocked: false },
-            { id: 'prestige_master', name: 'Maestro del Prestigio', description: 'Alcanza prestigio nivel 5', icon: '🌟', unlocked: false }
+            { id: 'prestige_master', name: 'Maestro del Prestigio', description: 'Alcanza prestigio nivel 5', icon: '🌟', unlocked: false },
+            { id: 'prestige_legend', name: 'Leyenda del Prestigio', description: 'Alcanza prestigio nivel 10', icon: '✨', unlocked: false },
+            { id: 'prestige_god', name: 'Dios del Prestigio', description: 'Alcanza prestigio nivel 25', icon: '🌠', unlocked: false },
+
+            // Logros especiales
+            { id: 'speed_demon', name: 'Demonio de la Velocidad', description: 'Haz 100 clicks en 10 segundos', icon: '💨', unlocked: false },
+            { id: 'patient_player', name: 'Jugador Paciente', description: 'Juega durante 1 hora', icon: '⏰', unlocked: false },
+            { id: 'dedicated_player', name: 'Jugador Dedicado', description: 'Juega durante 5 horas', icon: '🕐', unlocked: false },
+            { id: 'business_mogul', name: 'Magnate de Negocios', description: 'Compra todas las mejoras de negocio', icon: '🎩', unlocked: false },
+            { id: 'completionist', name: 'Completista', description: 'Desbloquea todos los demás logros', icon: '🏆', unlocked: false }
         ];
 
         this.init();
@@ -231,6 +270,24 @@ class EstancoClicker {
         this.money += this.moneyPerClick;
         this.totalClicks++;
         this.totalEarned += this.moneyPerClick;
+
+        // Lógica para el logro "Demonio de la Velocidad"
+        const currentTime = Date.now();
+        if (this.speedClickStartTime === 0 || currentTime - this.speedClickStartTime > 10000) {
+            // Reiniciar contador si han pasado más de 10 segundos
+            this.speedClickStartTime = currentTime;
+            this.speedClickCount = 1;
+        } else {
+            this.speedClickCount++;
+            if (this.speedClickCount >= 100) {
+                // Desbloquear logro "Demonio de la Velocidad"
+                const speedAchievement = this.achievements.find(a => a.id === 'speed_demon');
+                if (speedAchievement && !speedAchievement.unlocked) {
+                    speedAchievement.unlocked = true;
+                    this.unlockAchievement(speedAchievement);
+                }
+            }
+        }
 
         this.createFloatingMoney(e, this.moneyPerClick);
         this.updateDisplay();
@@ -870,10 +927,29 @@ class EstancoClicker {
     checkAchievements() {
         // Definir los requisitos de logros (se pierden al cargar desde localStorage)
         const achievementRequirements = {
+            // Logros básicos
             'first_click': () => this.totalClicks >= 1,
             'hundred_euros': () => this.totalEarned >= 100,
-            'ambulante': () => this.businessUpgrades.ambulante.count >= 1,
             'thousand_euros': () => this.totalEarned >= 1000,
+            'ten_thousand_euros': () => this.totalEarned >= 10000,
+            'hundred_thousand_euros': () => this.totalEarned >= 100000,
+            'million_euros': () => this.totalEarned >= 1000000,
+            'millionaire': () => this.totalEarned >= 25000000,
+
+            // Logros de clicks
+            'click_master': () => this.totalClicks >= 1000,
+            'click_veteran': () => this.totalClicks >= 5000,
+            'click_legend': () => this.totalClicks >= 10000,
+            'click_god': () => this.totalClicks >= 50000,
+
+            // Logros de cursores automáticos
+            'first_cursor': () => this.autoClickUpgrades.cursor.count >= 1,
+            'cursor_collector': () => this.autoClickUpgrades.cursor.count >= 10,
+            'cursor_army': () => this.autoClickUpgrades.cursor.count >= 50,
+            'cursor_empire': () => this.autoClickUpgrades.cursor.count >= 100,
+
+            // Logros de negocios
+            'ambulante': () => this.businessUpgrades.ambulante.count >= 1,
             'pequeno_estanco': () => this.businessUpgrades.pequeno_estanco.count >= 1,
             'franquicia': () => this.businessUpgrades.franquicia.count >= 1,
             'distribuidor': () => this.businessUpgrades.distribuidor.count >= 1,
@@ -882,10 +958,25 @@ class EstancoClicker {
             'marketing': () => this.businessUpgrades.marketing.count >= 1,
             'global': () => this.businessUpgrades.global.count >= 1,
             'emperador': () => this.businessUpgrades.emperador.count >= 1,
-            'click_master': () => this.totalClicks >= 1000,
-            'millionaire': () => this.totalEarned >= 25000000,
+
+            // Logros de ingresos pasivos
+            'passive_income_1': () => this.incomePerSecond >= 1,
+            'passive_income_10': () => this.incomePerSecond >= 10,
+            'passive_income_100': () => this.incomePerSecond >= 100,
+            'passive_income_1000': () => this.incomePerSecond >= 1000,
+
+            // Logros de prestigio
             'first_prestige': () => this.prestigeLevel >= 1,
-            'prestige_master': () => this.prestigeLevel >= 5
+            'prestige_master': () => this.prestigeLevel >= 5,
+            'prestige_legend': () => this.prestigeLevel >= 10,
+            'prestige_god': () => this.prestigeLevel >= 25,
+
+            // Logros especiales
+            'speed_demon': () => this.checkSpeedDemon(),
+            'patient_player': () => this.checkPlayTime(3600), // 1 hora en segundos
+            'dedicated_player': () => this.checkPlayTime(18000), // 5 horas en segundos
+            'business_mogul': () => this.checkAllBusinessUpgrades(),
+            'completionist': () => this.checkCompletionist()
         };
 
         this.achievements.forEach(achievement => {
@@ -981,7 +1072,10 @@ class EstancoClicker {
             musicVolume: this.musicVolume,
             autoClickUpgrades: this.autoClickUpgrades,
             businessUpgrades: this.businessUpgrades,
-            achievements: this.achievements
+            achievements: this.achievements,
+            gameStartTime: this.gameStartTime,
+            speedClickCount: this.speedClickCount,
+            speedClickStartTime: this.speedClickStartTime
         };
 
         localStorage.setItem('fumaderoTycoonSave', JSON.stringify(gameData));
@@ -1013,6 +1107,9 @@ class EstancoClicker {
             this.prestigePoints = gameData.prestigePoints || 0;
             this.totalLifetimeEarnings = gameData.totalLifetimeEarnings || 0;
             this.musicVolume = gameData.musicVolume || 0.5;
+            this.gameStartTime = gameData.gameStartTime || Date.now();
+            this.speedClickCount = gameData.speedClickCount || 0;
+            this.speedClickStartTime = gameData.speedClickStartTime || 0;
 
             if (gameData.autoClickUpgrades) {
                 Object.assign(this.autoClickUpgrades, gameData.autoClickUpgrades);
@@ -1032,6 +1129,29 @@ class EstancoClicker {
             // Actualizar slider de volumen
             document.getElementById('volume-slider').value = this.musicVolume * 100;
         }
+    }
+
+    // Métodos auxiliares para logros especiales
+    checkSpeedDemon() {
+        // Este se verifica en handleMainClick cuando se detectan clicks rápidos
+        return false; // Se activará dinámicamente
+    }
+
+    checkPlayTime(requiredSeconds) {
+        const currentTime = Date.now();
+        const playTimeSeconds = (currentTime - this.gameStartTime) / 1000;
+        return playTimeSeconds >= requiredSeconds;
+    }
+
+    checkAllBusinessUpgrades() {
+        // Verificar que todas las mejoras de negocio han sido compradas al menos una vez
+        return Object.values(this.businessUpgrades).every(upgrade => upgrade.count >= 1);
+    }
+
+    checkCompletionist() {
+        // Verificar que todos los demás logros están desbloqueados (excepto este mismo)
+        const otherAchievements = this.achievements.filter(a => a.id !== 'completionist');
+        return otherAchievements.every(achievement => achievement.unlocked);
     }
 }
 
