@@ -128,6 +128,7 @@ class EstancoClicker {
             { id: 'global', name: 'Empresario Global', description: 'Expande globalmente', icon: '🌍', unlocked: false },
             { id: 'emperador', name: 'Emperador del Tabaco', description: 'Domina el mundo', icon: '👑', unlocked: false },
             { id: 'click_master', name: 'Maestro del Click', description: 'Haz 1000 clicks', icon: '🖱️', unlocked: false },
+            { id: 'millionaire', name: 'Multimillonario', description: 'Gana 25,000,000€', icon: '💎', unlocked: false },
             { id: 'first_prestige', name: 'Primer Prestigio', description: 'Haz tu primer prestigio', icon: '⭐', unlocked: false },
             { id: 'prestige_master', name: 'Maestro del Prestigio', description: 'Alcanza prestigio nivel 5', icon: '🌟', unlocked: false }
         ];
@@ -244,8 +245,9 @@ class EstancoClicker {
                     this.showNotification(`¡Negocio evolucionado! Ahora eres: ${upgrade.name}`);
                 }
 
-                // Añadir ingresos pasivos
-                this.incomePerSecond += upgrade.incomeBonus;
+                // Añadir ingresos pasivos con bonus de prestigio
+                const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
+                this.incomePerSecond += upgrade.incomeBonus * prestigeMultiplier;
 
                 this.updateDisplay();
                 this.checkAchievements();
@@ -273,21 +275,26 @@ class EstancoClicker {
 
         // Aplicar bonus de prestigio (10% por nivel de prestigio)
         const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
-        return Math.floor(baseClick * prestigeMultiplier);
+        const finalClick = Math.floor(baseClick * prestigeMultiplier);
+
+        // Asegurar que siempre sea al menos 1, incluso con prestigio
+        return Math.max(1, finalClick);
     }
 
     canPrestige() {
-        return this.totalEarned >= 1000000; // Requiere 1 millón para prestigio
+        // El prestigio debe costar más que el último rango (Emperador del Tabaco: 10M€)
+        return this.totalEarned >= 25000000; // Requiere 25 millones para prestigio
     }
 
     calculatePrestigePoints() {
         if (!this.canPrestige()) return 0;
-        return Math.floor(Math.sqrt(this.totalEarned / 1000000));
+        // Calcular puntos basado en el nuevo requisito (25M base)
+        return Math.floor(Math.sqrt(this.totalEarned / 25000000));
     }
 
     doPrestige() {
         if (!this.canPrestige()) {
-            this.showNotification("¡Necesitas ganar al least 1,000,000€ para hacer prestigio!");
+            this.showNotification("¡Necesitas ganar al menos 25,000,000€ para hacer prestigio!");
             return;
         }
 
@@ -295,9 +302,11 @@ class EstancoClicker {
         this.prestigePoints += newPrestigePoints;
         this.prestigeLevel++;
 
+        // Guardar el bonus actual antes del reset
+        const prestigeBonus = this.prestigeLevel * 10; // 10% por nivel
+
         // Resetear progreso pero mantener prestigio
         this.money = 0;
-        this.moneyPerClick = this.calculateMoneyPerClick(); // Recalcular con bonus de prestigio
         this.incomePerSecond = 0;
         this.totalClicks = 0;
         this.totalEarned = 0;
@@ -308,7 +317,10 @@ class EstancoClicker {
             upgrade.count = 0;
         });
 
-        // Resetear algunos logros (mantener los de prestigio)
+        // Recalcular dinero por click con el nuevo bonus de prestigio
+        this.moneyPerClick = this.calculateMoneyPerClick();
+
+        // Resetear algunos logros (mantener los de prestigio y click master)
         this.achievements.forEach(achievement => {
             if (!achievement.id.includes('prestige') && achievement.id !== 'click_master') {
                 achievement.unlocked = false;
@@ -320,7 +332,7 @@ class EstancoClicker {
         this.renderAchievements();
         this.saveGame();
 
-        this.showNotification(`¡Prestigio completado! Nivel ${this.prestigeLevel} - Ganaste ${newPrestigePoints} puntos de prestigio!`);
+        this.showNotification(`¡Prestigio completado! Nivel ${this.prestigeLevel} (+${prestigeBonus}% bonus) - Ganaste ${newPrestigePoints} puntos de prestigio!`);
     }
 
     resetGame() {
@@ -769,6 +781,7 @@ class EstancoClicker {
             'global': () => this.businessUpgrades.global.count >= 1,
             'emperador': () => this.businessUpgrades.emperador.count >= 1,
             'click_master': () => this.totalClicks >= 1000,
+            'millionaire': () => this.totalEarned >= 25000000,
             'first_prestige': () => this.prestigeLevel >= 1,
             'prestige_master': () => this.prestigeLevel >= 5
         };
