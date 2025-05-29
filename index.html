@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fumadero Tycoon - El Imperio del Tabaco</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzJGMUIxNCIvPgo8cmVjdCB4PSI1IiB5PSIxNSIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiNGRkZGRkYiLz4KPHJlY3QgeD0iNSIgeT0iMjIiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjRkZGRkZGIi8+CjxyZWN0IHg9IjMwIiB5PSIxMCIgd2lkdGg9IjgiIGhlaWdodD0iMjAiIHJ4PSI0IiBmaWxsPSIjOEI0NTEzIi8+CjxjaXJjbGUgY3g9IjM0IiBjeT0iMTIiIHI9IjIiIGZpbGw9IiNGRkQ3MDAiLz4KPGNpcmNsZSBjeD0iMzQiIGN5PSIyOCIgcj0iMiIgZmlsbD0iI0ZGRDcwMCIvPgo8L3N2Zz4K">
+    <link rel="icon" href="logo.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
                 </div>
                 <button id="reset-btn" class="reset-button">🗑️ RESET COMPLETO</button>
             </div>
-            <h1>🚬 Fumadero Tycoon</h1>
+            <h1><img src="logo.png" alt="Logo" class="logo-icon"> Fumadero Tycoon</h1>
             <div class="stats-compact">
                 <div class="stats-row">
                     <div class="stat-item">
@@ -66,27 +66,12 @@
             <div class="scrollable-content">
 
             <div class="upgrades-panel">
-                <h3>�️ Mejoras de Clicks Automáticos</h3>
-                <div class="upgrades-list">
-                    <div class="upgrade auto-click-upgrade" id="upgrade-cursor">
-                        <div class="upgrade-info">
-                            <span class="upgrade-icon">🖱️</span>
-                            <div class="upgrade-details">
-                                <div class="upgrade-name">Cursor Automático</div>
-                                <div class="upgrade-description">Hace clicks automáticamente</div>
-                                <div class="upgrade-benefit">+1 click/seg</div>
-                                <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
-                            </div>
-                        </div>
-                        <div class="upgrade-cost">
-                            <span class="price">15</span>€
-                        </div>
-                    </div>
-
-
+                <h3>🖱️ Mejoras de Clicks Manuales</h3>
+                <div class="upgrades-list" id="click-upgrades-container">
+                    <!-- Los upgrades de clicks se generarán dinámicamente -->
                 </div>
 
-                <h3>�🚀 Evolución del Negocio</h3>
+                <h3>🚀 Evolución del Negocio</h3>
                 <div class="upgrades-list" id="business-upgrades-container">
                     <!-- Los upgrades se generarán dinámicamente -->
                 </div>

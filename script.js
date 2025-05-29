@@ -18,14 +18,14 @@ class EstancoClicker {
         this.speedClickCount = 0;
         this.speedClickStartTime = 0;
 
-        // Mejoras de clicks automáticos
-        this.autoClickUpgrades = {
+        // Mejoras de clicks manuales
+        this.clickUpgrades = {
             cursor: {
                 count: 0,
                 baseCost: 15,
-                clicksPerSecond: 1,
-                name: "Cursor Automático",
-                description: "Hace clicks automáticamente"
+                clickBonus: 1,
+                name: "Cursor",
+                description: "Mejora tus clicks manuales"
             }
         };
 
@@ -79,16 +79,6 @@ class EstancoClicker {
                 description: "Llevas una cajita de cigarros baratos a escondidas",
                 icon: "📦",
                 signText: "VENTA EN CALLEJÓN"
-            },
-            ambulante: {
-                count: 0,
-                baseCost: 250,
-                incomeBonus: 5,
-                level: 7,
-                name: "Puesto Ambulante de Tabaco",
-                description: "Carrito con cajetillas, encendedores y chicles",
-                icon: "🛒",
-                signText: "PUESTO AMBULANTE"
             },
             mercado: {
                 count: 0,
@@ -150,26 +140,6 @@ class EstancoClicker {
                 icon: "🏢",
                 signText: "CADENA DE ESTANCOS"
             },
-            franquicia: {
-                count: 0,
-                baseCost: 50000,
-                incomeBonus: 600,
-                level: 14,
-                name: "Franquicia Regional",
-                description: "Licencias tu marca a terceros",
-                icon: "🤝",
-                signText: "FRANQUICIA REGIONAL"
-            },
-            distribuidor: {
-                count: 0,
-                baseCost: 100000,
-                incomeBonus: 1200,
-                level: 15,
-                name: "Distribuidor de Tabaco",
-                description: "Llevas productos a otros estancos",
-                icon: "🚚",
-                signText: "DISTRIBUIDOR"
-            },
             almacen: {
                 count: 0,
                 baseCost: 250000,
@@ -179,26 +149,6 @@ class EstancoClicker {
                 description: "Tienes un centro de distribución",
                 icon: "🏭",
                 signText: "ALMACÉN CENTRAL"
-            },
-            marca_propia: {
-                count: 0,
-                baseCost: 500000,
-                incomeBonus: 5000,
-                level: 17,
-                name: "Marca Propia de Cigarros",
-                description: "Diseñas tu primer empaque",
-                icon: "🏷️",
-                signText: "MARCA PROPIA"
-            },
-            fabrica: {
-                count: 0,
-                baseCost: 1000000,
-                incomeBonus: 10000,
-                level: 18,
-                name: "Fábrica de Producción",
-                description: "Cultivas, secas y empaquetas tabaco",
-                icon: "🏭",
-                signText: "FÁBRICA"
             },
             puros: {
                 count: 0,
@@ -310,16 +260,6 @@ class EstancoClicker {
                 icon: "📰",
                 signText: "MAGNATE"
             },
-            emperador: {
-                count: 0,
-                baseCost: 10000000000,
-                incomeBonus: 100000000,
-                level: 30,
-                name: "Emperador del Humo",
-                description: "Controlas la industria a nivel global",
-                icon: "👑",
-                signText: "EMPERADOR DEL HUMO"
-            },
             isla: {
                 count: 0,
                 baseCost: 25000000000,
@@ -365,7 +305,6 @@ class EstancoClicker {
             { id: 'cursor_empire', name: 'Imperio de Cursores', description: 'Compra 100 cursores automáticos', icon: '🏰', unlocked: false },
 
             // Logros de negocios
-            { id: 'ambulante', name: 'Vendedor Ambulante', description: 'Monta tu puesto ambulante', icon: '🛒', unlocked: false },
             { id: 'pequeno_estanco', name: 'Pequeño Comerciante', description: 'Abre tu pequeño estanco', icon: '🏪', unlocked: false },
             { id: 'franquicia', name: 'Franquiciado', description: 'Expande con una franquicia', icon: '🏬', unlocked: false },
             { id: 'distribuidor', name: 'Distribuidor Regional', description: 'Conviértete en distribuidor', icon: '🚚', unlocked: false },
@@ -405,14 +344,14 @@ class EstancoClicker {
         this.bindEvents();
         this.updateDisplay();
         this.updateBusinessDisplay();
-        this.updateAutoClickUpgradesDisplay();
+        this.updateClickUpgradesDisplay();
 
         // Renderizar logros y upgrades dinámicamente
         this.renderAchievements();
+        this.renderClickUpgrades();
         this.renderBusinessUpgrades();
 
         this.startIncomeLoop();
-        this.startAutoClickLoop();
         this.checkAchievements();
         this.initAudio();
     }
@@ -423,19 +362,7 @@ class EstancoClicker {
             this.handleMainClick(e);
         });
 
-        // Mejoras de clicks automáticos
-        document.querySelectorAll('.auto-click-upgrade').forEach(upgrade => {
-            upgrade.addEventListener('click', (e) => {
-                this.handleAutoClickUpgradeClick(e);
-            });
-        });
-
-        // Mejoras de negocio
-        document.querySelectorAll('.business-upgrade').forEach(upgrade => {
-            upgrade.addEventListener('click', (e) => {
-                this.handleBusinessUpgradeClick(e);
-            });
-        });
+        // Los event listeners de upgrades se añaden dinámicamente en los métodos render
 
         // Botón de prestigio
         document.getElementById('prestige-btn').addEventListener('click', () => {
@@ -493,6 +420,12 @@ class EstancoClicker {
     }
 
     handleMainClick(e) {
+        // Verificar que moneyPerClick sea válido antes de usar
+        if (isNaN(this.moneyPerClick) || this.moneyPerClick < 1) {
+            console.error('DETECTADO NaN en handleMainClick! moneyPerClick:', this.moneyPerClick);
+            this.moneyPerClick = 1; // Corregir inmediatamente
+        }
+
         this.money += this.moneyPerClick;
         this.totalClicks++;
         this.totalEarned += this.moneyPerClick;
@@ -521,27 +454,43 @@ class EstancoClicker {
         this.saveGame();
     }
 
-    handleAutoClickUpgradeClick(e) {
+    handleClickUpgradeClick(e) {
         const upgradeId = e.currentTarget.id.replace('upgrade-', '');
-        const upgrade = this.autoClickUpgrades[upgradeId];
+        const upgrade = this.clickUpgrades[upgradeId];
+
+        console.log('Comprando upgrade:', upgradeId, upgrade);
 
         if (upgrade) {
-            const cost = this.getAutoClickUpgradeCost(upgradeId);
+            const cost = this.getClickUpgradeCost(upgradeId);
 
             if (this.money >= cost) {
                 this.money -= cost;
                 upgrade.count++;
 
-                // Añadir clicks por segundo con bonus de prestigio
-                const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
-                this.clicksPerSecond += upgrade.clicksPerSecond * prestigeMultiplier;
+                console.log('Upgrade comprado. Nuevo count:', upgrade.count);
+                console.log('clickUpgrades estado:', this.clickUpgrades);
+
+                // Recalcular dinero por click
+                const newMoneyPerClick = this.calculateMoneyPerClick();
+
+                console.log('Nuevo moneyPerClick calculado:', newMoneyPerClick);
+
+                // Verificar que el resultado sea válido
+                if (isNaN(newMoneyPerClick) || newMoneyPerClick < 1) {
+                    console.error('Error calculando moneyPerClick:', newMoneyPerClick);
+                    this.moneyPerClick = 1; // Valor por defecto seguro
+                } else {
+                    this.moneyPerClick = newMoneyPerClick;
+                }
+
+                console.log('moneyPerClick final:', this.moneyPerClick);
 
                 this.updateDisplay();
-                this.updateAutoClickUpgradesDisplay();
+                this.updateClickUpgradesDisplay();
                 this.checkAchievements();
                 this.saveGame();
 
-                this.showNotification(`¡${upgrade.name} comprado! +${upgrade.clicksPerSecond} clicks/seg`);
+                this.showNotification(`¡${upgrade.name} comprado! +${upgrade.clickBonus}€ por click`);
             }
         }
     }
@@ -576,8 +525,8 @@ class EstancoClicker {
         }
     }
 
-    getAutoClickUpgradeCost(upgradeId) {
-        const upgrade = this.autoClickUpgrades[upgradeId];
+    getClickUpgradeCost(upgradeId) {
+        const upgrade = this.clickUpgrades[upgradeId];
         return Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.count));
     }
 
@@ -587,15 +536,45 @@ class EstancoClicker {
     }
 
     calculateMoneyPerClick() {
-        // El dinero por click ahora es fijo: 1€ base + bonus de prestigio
+        console.log('=== calculateMoneyPerClick ===');
+        console.log('this.clickUpgrades:', this.clickUpgrades);
+        console.log('this.prestigeLevel:', this.prestigeLevel);
+
+        // El dinero por click: 1€ base + bonus de cursores + bonus de prestigio
         let baseClick = 1;
+        console.log('baseClick inicial:', baseClick);
+
+        // Bonus de cursores manuales (verificar que existan)
+        if (this.clickUpgrades && typeof this.clickUpgrades === 'object') {
+            console.log('clickUpgrades existe, procesando...');
+            Object.values(this.clickUpgrades).forEach(upgrade => {
+                console.log('Procesando upgrade:', upgrade);
+                if (upgrade && typeof upgrade.count === 'number' && typeof upgrade.clickBonus === 'number') {
+                    const bonus = upgrade.count * upgrade.clickBonus;
+                    console.log(`Añadiendo bonus: ${upgrade.count} * ${upgrade.clickBonus} = ${bonus}`);
+                    baseClick += bonus;
+                }
+            });
+        } else {
+            console.log('clickUpgrades no existe o no es objeto');
+        }
+
+        console.log('baseClick después de cursores:', baseClick);
 
         // Aplicar bonus de prestigio (10% por nivel de prestigio)
-        const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
+        const prestigeLevel = this.prestigeLevel || 0;
+        const prestigeMultiplier = 1 + (prestigeLevel * 0.1);
+        console.log('prestigeMultiplier:', prestigeMultiplier);
+
         const finalClick = Math.floor(baseClick * prestigeMultiplier);
+        console.log('finalClick antes de Math.max:', finalClick);
 
         // Asegurar que siempre sea al menos 1
-        return Math.max(1, finalClick);
+        const result = Math.max(1, finalClick);
+        console.log('resultado final:', result);
+        console.log('=== fin calculateMoneyPerClick ===');
+
+        return result;
     }
 
     canPrestige() {
@@ -630,8 +609,8 @@ class EstancoClicker {
         this.totalEarned = 0;
         this.currentBusinessLevel = 1;
 
-        // Resetear mejoras de clicks automáticos
-        Object.values(this.autoClickUpgrades).forEach(upgrade => {
+        // Resetear mejoras de clicks manuales
+        Object.values(this.clickUpgrades).forEach(upgrade => {
             upgrade.count = 0;
         });
 
@@ -652,7 +631,7 @@ class EstancoClicker {
 
         this.updateDisplay();
         this.updateBusinessDisplay();
-        this.updateAutoClickUpgradesDisplay();
+        this.updateClickUpgradesDisplay();
         this.renderAchievements();
         this.saveGame();
 
@@ -672,8 +651,8 @@ class EstancoClicker {
         this.prestigePoints = 0;
         this.totalLifetimeEarnings = 0;
 
-        // Resetear mejoras de clicks automáticos
-        Object.values(this.autoClickUpgrades).forEach(upgrade => {
+        // Resetear mejoras de clicks manuales
+        Object.values(this.clickUpgrades).forEach(upgrade => {
             upgrade.count = 0;
         });
 
@@ -694,7 +673,7 @@ class EstancoClicker {
         // Actualizar interfaz
         this.updateDisplay();
         this.updateBusinessDisplay();
-        this.updateAutoClickUpgradesDisplay();
+        this.updateClickUpgradesDisplay();
         this.renderAchievements();
 
         this.showNotification('¡Juego reseteado completamente! Empezando desde cero...');
@@ -985,16 +964,7 @@ class EstancoClicker {
 
         // Actualizar el texto del click
         const clickTexts = {
-            1: "¡Haz click para vender cigarrillos!",
-            2: "¡Haz click para atender el puesto!",
-            3: "¡Haz click para gestionar el estanco!",
-            4: "¡Haz click para operar la franquicia!",
-            5: "¡Haz click para gestionar la distribución!",
-            6: "¡Haz click para desarrollar tu marca!",
-            7: "¡Haz click para operar la fábrica!",
-            8: "¡Haz click para dirigir el marketing!",
-            9: "¡Haz click para expandir globalmente!",
-            10: "¡Haz click para gobernar tu imperio!"
+            1: "¡Haz click!"
         };
 
         document.getElementById('click-text').textContent = clickTexts[currentBusiness.level] || clickTexts[1];
@@ -1017,6 +987,12 @@ class EstancoClicker {
     }
 
     updateDisplay() {
+        // Verificar que moneyPerClick sea válido antes de mostrar
+        if (isNaN(this.moneyPerClick) || this.moneyPerClick < 1) {
+            console.error('DETECTADO NaN en updateDisplay! moneyPerClick:', this.moneyPerClick);
+            this.moneyPerClick = 1; // Corregir inmediatamente
+        }
+
         document.getElementById('money').textContent = this.formatNumber(Math.floor(this.money));
         document.getElementById('income-per-second').textContent = this.formatNumber(this.incomePerSecond.toFixed(1));
         document.getElementById('clicks-per-second').textContent = this.formatNumber(this.clicksPerSecond.toFixed(1));
@@ -1083,8 +1059,8 @@ class EstancoClicker {
             }
         });
 
-        // También actualizar las mejoras de clicks automáticos
-        this.updateAutoClickUpgradesDisplay();
+        // También actualizar las mejoras de clicks manuales
+        this.updateClickUpgradesDisplay();
     }
 
 
@@ -1100,23 +1076,12 @@ class EstancoClicker {
         }, 100);
     }
 
-    startAutoClickLoop() {
-        setInterval(() => {
-            if (this.clicksPerSecond > 0) {
-                const clicks = this.clicksPerSecond / 10; // Dividido por 10 porque se ejecuta cada 100ms
-                const earnings = clicks * this.moneyPerClick;
-                this.money += earnings;
-                this.totalEarned += earnings;
-                this.totalClicks += clicks;
-                this.updateDisplay();
-            }
-        }, 100);
-    }
 
-    updateAutoClickUpgradesDisplay() {
-        // Actualizar contadores de mejoras de clicks automáticos y costos
-        Object.keys(this.autoClickUpgrades).forEach(upgradeId => {
-            const upgrade = this.autoClickUpgrades[upgradeId];
+
+    updateClickUpgradesDisplay() {
+        // Actualizar contadores de mejoras de clicks manuales y costos
+        Object.keys(this.clickUpgrades).forEach(upgradeId => {
+            const upgrade = this.clickUpgrades[upgradeId];
             const upgradeElement = document.getElementById(`upgrade-${upgradeId}`);
 
             if (upgradeElement) {
@@ -1124,10 +1089,10 @@ class EstancoClicker {
                 const priceElement = upgradeElement.querySelector('.price');
 
                 if (countElement) countElement.textContent = upgrade.count;
-                if (priceElement) priceElement.textContent = this.formatNumber(this.getAutoClickUpgradeCost(upgradeId));
+                if (priceElement) priceElement.textContent = this.formatNumber(this.getClickUpgradeCost(upgradeId));
 
                 // Marcar si es asequible
-                const cost = this.getAutoClickUpgradeCost(upgradeId);
+                const cost = this.getClickUpgradeCost(upgradeId);
                 if (this.money >= cost) {
                     upgradeElement.classList.add('affordable');
                 } else {
@@ -1142,12 +1107,6 @@ class EstancoClicker {
                 }
             }
         });
-
-        // Actualizar display de clicks por segundo
-        const clicksPerSecDisplay = document.getElementById('clicks-per-second');
-        if (clicksPerSecDisplay) {
-            clicksPerSecDisplay.textContent = this.formatNumber(this.clicksPerSecond.toFixed(1));
-        }
     }
 
     checkAchievements() {
@@ -1168,11 +1127,11 @@ class EstancoClicker {
             'click_legend': () => this.totalClicks >= 10000,
             'click_god': () => this.totalClicks >= 50000,
 
-            // Logros de cursores automáticos
-            'first_cursor': () => this.autoClickUpgrades.cursor.count >= 1,
-            'cursor_collector': () => this.autoClickUpgrades.cursor.count >= 10,
-            'cursor_army': () => this.autoClickUpgrades.cursor.count >= 50,
-            'cursor_empire': () => this.autoClickUpgrades.cursor.count >= 100,
+            // Logros de cursores manuales
+            'first_cursor': () => this.clickUpgrades.cursor.count >= 1,
+            'cursor_collector': () => this.clickUpgrades.cursor.count >= 10,
+            'cursor_army': () => this.clickUpgrades.cursor.count >= 50,
+            'cursor_empire': () => this.clickUpgrades.cursor.count >= 100,
 
             // Logros de negocios (usando los nuevos IDs)
             'ambulante': () => this.businessUpgrades.ambulante.count >= 1,
@@ -1241,7 +1200,7 @@ class EstancoClicker {
         const categories = {
             'Dinero': ['first_click', 'hundred_euros', 'thousand_euros', 'ten_thousand_euros', 'hundred_thousand_euros', 'million_euros', 'millionaire'],
             'Clicks': ['click_master', 'click_veteran', 'click_legend', 'click_god'],
-            'Cursores Automáticos': ['first_cursor', 'cursor_collector', 'cursor_army', 'cursor_empire'],
+            'Cursores Manuales': ['first_cursor', 'cursor_collector', 'cursor_army', 'cursor_empire'],
             'Evolución del Negocio': ['ambulante', 'pequeno_estanco', 'franquicia', 'distribuidor', 'marca_propia', 'fabrica', 'marketing', 'global', 'emperador'],
             'Ingresos Pasivos': ['passive_income_1', 'passive_income_10', 'passive_income_100', 'passive_income_1000'],
             'Prestigio': ['first_prestige', 'prestige_master', 'prestige_legend', 'prestige_god'],
@@ -1278,6 +1237,44 @@ class EstancoClicker {
         });
     }
 
+    renderClickUpgrades() {
+        const container = document.getElementById('click-upgrades-container');
+        if (!container) return;
+
+        // Limpiar contenedor
+        container.innerHTML = '';
+
+        // Generar cada upgrade dinámicamente
+        Object.entries(this.clickUpgrades).forEach(([upgradeId, upgrade]) => {
+            const upgradeElement = document.createElement('div');
+            upgradeElement.className = 'upgrade auto-click-upgrade';
+            upgradeElement.id = `upgrade-${upgradeId}`;
+
+            upgradeElement.innerHTML = `
+                <div class="upgrade-info">
+                    <span class="upgrade-icon">🖱️</span>
+                    <div class="upgrade-details">
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="upgrade-benefit">+${upgrade.clickBonus}€ por click</div>
+                        <div class="upgrade-owned">Tienes: <span class="count">0</span></div>
+                    </div>
+                </div>
+                <div class="upgrade-cost">
+                    <span class="price">${this.formatNumber(this.getClickUpgradeCost(upgradeId))}</span>€
+                </div>
+            `;
+
+            container.appendChild(upgradeElement);
+        });
+
+        // Después de renderizar, añadir event listeners
+        setTimeout(() => {
+            this.bindClickUpgradeEvents();
+            this.updateClickUpgradesDisplay();
+        }, 100);
+    }
+
     renderBusinessUpgrades() {
         const container = document.getElementById('business-upgrades-container');
         if (!container) return;
@@ -1302,17 +1299,36 @@ class EstancoClicker {
                     </div>
                 </div>
                 <div class="upgrade-cost">
-                    <span class="price">${this.formatNumber(upgrade.baseCost)}</span>€
+                    <span class="price">${this.formatNumber(this.getBusinessUpgradeCost(upgradeId))}</span>€
                 </div>
             `;
 
             container.appendChild(upgradeElement);
         });
 
-        // Después de renderizar, actualizar los precios y estados
+        // Después de renderizar, añadir event listeners y actualizar estados
         setTimeout(() => {
+            this.bindBusinessUpgradeEvents();
             this.updateBusinessDisplay();
         }, 100);
+    }
+
+    bindClickUpgradeEvents() {
+        // Añadir event listeners a los upgrades de clicks generados dinámicamente
+        document.querySelectorAll('.auto-click-upgrade').forEach(upgrade => {
+            upgrade.addEventListener('click', (e) => {
+                this.handleClickUpgradeClick(e);
+            });
+        });
+    }
+
+    bindBusinessUpgradeEvents() {
+        // Añadir event listeners a los upgrades de negocio generados dinámicamente
+        document.querySelectorAll('.business-upgrade').forEach(upgrade => {
+            upgrade.addEventListener('click', (e) => {
+                this.handleBusinessUpgradeClick(e);
+            });
+        });
     }
 
     showNotification(message) {
@@ -1359,7 +1375,7 @@ class EstancoClicker {
             prestigePoints: this.prestigePoints,
             totalLifetimeEarnings: this.totalLifetimeEarnings,
             musicVolume: this.musicVolume,
-            autoClickUpgrades: this.autoClickUpgrades,
+            clickUpgrades: this.clickUpgrades,
             businessUpgrades: this.businessUpgrades,
             achievements: this.achievements,
             gameStartTime: this.gameStartTime,
@@ -1400,8 +1416,11 @@ class EstancoClicker {
             this.speedClickCount = gameData.speedClickCount || 0;
             this.speedClickStartTime = gameData.speedClickStartTime || 0;
 
-            if (gameData.autoClickUpgrades) {
-                Object.assign(this.autoClickUpgrades, gameData.autoClickUpgrades);
+            if (gameData.clickUpgrades) {
+                Object.assign(this.clickUpgrades, gameData.clickUpgrades);
+            } else if (gameData.autoClickUpgrades) {
+                // Migrar datos antiguos
+                Object.assign(this.clickUpgrades, gameData.autoClickUpgrades);
             }
 
             if (gameData.businessUpgrades) {
@@ -1431,7 +1450,13 @@ class EstancoClicker {
             }
 
             // Recalcular el dinero por click basado en las mejoras cargadas
-            this.moneyPerClick = this.calculateMoneyPerClick();
+            const calculatedMoneyPerClick = this.calculateMoneyPerClick();
+            if (isNaN(calculatedMoneyPerClick) || calculatedMoneyPerClick < 1) {
+                console.error('Error calculando moneyPerClick en loadGame:', calculatedMoneyPerClick);
+                this.moneyPerClick = 1; // Valor por defecto seguro
+            } else {
+                this.moneyPerClick = calculatedMoneyPerClick;
+            }
 
             // Recalcular ingresos por segundo
             this.recalculateIncomePerSecond();
@@ -1454,12 +1479,8 @@ class EstancoClicker {
     }
 
     recalculateClicksPerSecond() {
+        // Los cursores ya no generan clicks automáticos, solo mejoran clicks manuales
         this.clicksPerSecond = 0;
-        const prestigeMultiplier = 1 + (this.prestigeLevel * 0.1);
-
-        Object.values(this.autoClickUpgrades).forEach(upgrade => {
-            this.clicksPerSecond += upgrade.count * upgrade.clicksPerSecond * prestigeMultiplier;
-        });
     }
 
     // Métodos auxiliares para logros especiales
