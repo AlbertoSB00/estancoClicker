@@ -169,23 +169,23 @@ body {
     display: grid;
     grid-template-columns: 400px 1fr;
     gap: 20px;
-    margin-bottom: 20px;
-    height: calc(100vh - 200px);
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .click-area-container {
-    position: sticky;
-    top: 20px;
-    height: fit-content;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    height: fit-content;
+    overflow: hidden;
 }
 
 .scrollable-content {
     overflow-y: auto;
-    max-height: calc(100vh - 200px);
+    height: 100%;
     padding-right: 10px;
 }
 
@@ -231,6 +231,11 @@ body {
     cursor: pointer;
     transition: all 0.1s ease;
     user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .click-area:hover {
@@ -325,6 +330,12 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .upgrade:hover {
@@ -457,6 +468,12 @@ body {
     transition: all 0.3s ease;
     text-align: center;
     min-width: 200px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .prestige-button.available {
@@ -642,20 +659,29 @@ body {
 }
 
 @media (max-width: 768px) {
+    body {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .game-container {
+        height: 100vh;
+        padding: 10px;
+    }
+
     .game-main {
         grid-template-columns: 1fr;
-        height: auto;
+        overflow: hidden;
     }
 
     .click-area-container {
-        position: relative;
-        top: auto;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        height: auto;
     }
 
     .scrollable-content {
-        max-height: none;
-        overflow-y: visible;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .stats {
@@ -668,6 +694,11 @@ body {
         top: auto;
         right: auto;
         justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .game-header {
+        padding: 15px;
         margin-bottom: 15px;
     }
 
